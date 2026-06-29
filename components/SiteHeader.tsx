@@ -106,13 +106,12 @@ export function SiteHeader() {
                 <span className="hidden lg:inline">Afspraak maken</span>
               </Link>
             </div>
-            {/* Mobile: designed primary appointment pill, in the action area next
-                to the hamburger. (Not a `.btn`, so md:hidden works directly.) */}
+            {/* Mobile: appointment CTA as text with an orange (primary) outline —
+                transparent fill, no heavy button. (Not a `.btn`, so md:hidden works.) */}
             <Link
               href="/contact"
-              className="md:hidden inline-flex items-center gap-1.5 rounded-full bg-[var(--color-red)] py-2 pl-2.5 pr-3.5 text-[12.5px] font-bold leading-none text-white shadow-[0_8px_18px_-8px_rgba(209,87,40,0.85)] transition-transform active:scale-95 focus-ring"
+              className="md:hidden inline-flex items-center rounded-full border-[1.5px] border-[var(--color-red)] bg-transparent px-3.5 py-2 text-[12.5px] font-bold leading-none text-[var(--color-red)] transition-colors active:bg-[var(--color-red-tint)] focus-ring"
             >
-              <CalendarPlus className="size-[15px]" aria-hidden />
               Afspraak maken
             </Link>
             {/* Mobile: hamburger */}
