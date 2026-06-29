@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { Search, RotateCcw } from "lucide-react";
 import { FUEL_TYPES, TRANSMISSIONS } from "@/lib/constants";
 import { cn } from "@/lib/cn";
@@ -36,13 +36,18 @@ export function CarFilters({ brands, fuels, transmissions, bodies, className, on
   const sp = useSearchParams();
   const [pending, startTransition] = useTransition();
 
-  const [q, setQ] = useState(sp.get("q") ?? "");
+  const urlQ = sp.get("q") ?? "";
+  const [q, setQ] = useState(urlQ);
+  const [prevUrlQ, setPrevUrlQ] = useState(urlQ);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Keep the search box in sync when the URL changes externally (e.g. reset).
-  useEffect(() => {
-    setQ(sp.get("q") ?? "");
-  }, [sp]);
+  // Keep the search box in sync when the URL's `q` changes externally (reset,
+  // browser back/forward). Adjusting state during render is React's documented
+  // alternative to a syncing effect — and avoids a post-paint flash.
+  if (urlQ !== prevUrlQ) {
+    setPrevUrlQ(urlQ);
+    setQ(urlQ);
+  }
 
   const value = (key: string, fallback = "") => sp.get(key) ?? fallback;
 
@@ -100,7 +105,7 @@ export function CarFilters({ brands, fuels, transmissions, bodies, className, on
             type="search"
             value={q}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Zoek op merk of model"
+            placeholder="Zoeken…"
             aria-label="Zoek in aanbod"
             className="input pl-10"
           />

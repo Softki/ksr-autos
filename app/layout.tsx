@@ -4,6 +4,7 @@ import "./globals.css";
 import { BUSINESS, OPENING_HOURS } from "@/lib/constants";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
+import { HideOnAdmin } from "@/components/HideOnAdmin";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Toaster } from "sonner";
 
@@ -135,7 +136,9 @@ export default function RootLayout({
           {children}
         </main>
 
-        <Footer />
+        <HideOnAdmin>
+          <Footer />
+        </HideOnAdmin>
         <ChatWidget />
         <Toaster
           position="top-center"

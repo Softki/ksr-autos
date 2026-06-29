@@ -35,7 +35,13 @@ function normalizeOptions(value: Json | string[] | undefined | null): string[] {
 }
 
 function fromRow(row: CarRow, images: CarImageRow[] = []): Car {
-  const main = images.find((i) => i.is_main) ?? images[0];
+  // Sort once: is_main first, then sort_order. Derive the cover from this same
+  // ordered list so the listing thumbnail always matches the gallery's first
+  // image even in a transient zero-`is_main` window (e.g. mid-reorder).
+  const sorted = images
+    .slice()
+    .sort((a, b) => Number(b.is_main) - Number(a.is_main) || a.sort_order - b.sort_order);
+  const main = sorted[0];
   return {
     id: row.id,
     slug: row.slug,
@@ -63,9 +69,7 @@ function fromRow(row: CarRow, images: CarImageRow[] = []): Car {
     is_featured: row.is_featured,
     is_published: row.is_published,
     main_image: main?.image_url,
-    images: images
-      .slice()
-      .sort((a, b) => Number(b.is_main) - Number(a.is_main) || a.sort_order - b.sort_order)
+    images: sorted
       .map((i) => ({
         id: i.id,
         car_id: i.car_id,

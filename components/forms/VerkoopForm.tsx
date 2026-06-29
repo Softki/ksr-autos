@@ -3,7 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { Search, Check, Upload, X, Loader2, RotateCw } from "lucide-react";
+import { Check, Upload, X, Loader2, RotateCw } from "lucide-react";
 
 import { submitInquiryAction } from "@/lib/actions/inquiries";
 import { initialInquiryState } from "@/lib/actions/state";
@@ -23,6 +23,7 @@ type UploadItem = { id: string; previewUrl: string; url?: string; status: "uploa
 export function VerkoopForm() {
   const [state, formAction] = useActionState(submitInquiryAction, initialInquiryState);
   const formRef = useRef<HTMLFormElement>(null);
+  const lastShownRef = useRef<string | null>(null);
   const [ts, setTs] = useState("");
 
   const [kenteken, setKenteken] = useState("");
@@ -35,13 +36,19 @@ export function VerkoopForm() {
   const [uploadConfigured, setUploadConfigured] = useState(true);
 
   useEffect(() => {
+    // Hydration-safe timestamp for the honeypot timing check; the server can't
+    // know Date.now(), so we populate it after mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTs(String(Date.now()));
   }, []);
 
   useEffect(() => {
-    if (state.ok && state.message) {
+    if (state.ok && state.message && lastShownRef.current !== state.message) {
+      lastShownRef.current = state.message;
       toast.success(state.message);
       formRef.current?.reset();
+      // Controlled fields must be cleared via state — a DOM form reset is not
+      // enough since these inputs are React-controlled (RDW auto-fill).
       setKenteken("");
       setBrand("");
       setModel("");

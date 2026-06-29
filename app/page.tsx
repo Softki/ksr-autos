@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight, Check, Car, Handshake, Search } from "lucide-react";
 
 import { CarCard } from "@/components/public/CarCard";
+import { ClosingCTA } from "@/components/public/ClosingCTA";
 import { HeroSearch } from "@/components/public/HeroSearch";
 import { WhatsAppCTA } from "@/components/public/WhatsAppCTA";
 import { getFeaturedCars, listPublicCars } from "@/lib/data/cars";
@@ -30,7 +31,7 @@ export default async function HomePage() {
       <FeaturedSection featured={featured} />
       <BrandGrid />
       <WhyKsr total={total} />
-      <ContactBand />
+      <ClosingCTA />
     </>
   );
 }
@@ -285,39 +286,3 @@ function WhyKsr({ total }: { total: number }) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Contact band (terracotta)                                                 */
-/* -------------------------------------------------------------------------- */
-
-function ContactBand() {
-  const message = "Hallo KSR Auto's, ik wil graag langskomen aan de Havenkade. Wanneer kan dat?";
-  return (
-    <section className="relative overflow-hidden bg-[var(--color-red)] text-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-50 pointer-events-none [background-image:radial-gradient(rgba(255,255,255,0.13)_1.5px,transparent_1.5px)] [background-size:26px_26px]"
-      />
-      <div
-        aria-hidden
-        className="absolute w-[520px] h-[520px] rounded-full left-[-160px] bottom-[-260px] pointer-events-none [background:radial-gradient(circle,rgba(255,255,255,0.14),transparent_70%)]"
-      />
-      <div className="relative container py-20 md:py-24 flex flex-col items-center text-center gap-7">
-        <div className="flex flex-col items-center">
-          <h2 className="text-white max-w-[16ch]">Liever even langskomen?</h2>
-          <p className="mt-3.5 text-white/[0.86] text-[16px] md:text-[16.5px] max-w-[34em]">
-            Bel of app vooraf voor de beste service — dan zorgen we dat uw auto klaarstaat aan de
-            Havenkade 4 in Ridderkerk.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3 justify-center">
-          <a href={BUSINESS.telHref} className="btn btn-lg border border-white/45 text-white hover:bg-white/10 tabular">
-            {BUSINESS.phone}
-          </a>
-          <a href={whatsAppLink(message, BUSINESS.whatsapp)} target="_blank" rel="noopener" className="btn btn-lg btn-dark">
-            WhatsApp ons
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}

@@ -19,8 +19,8 @@ export function DeleteCarButton({ id, title }: Props) {
       }}
     >
       <input type="hidden" name="id" value={id} />
-      <button type="submit" className="text-[var(--color-error)] hover:underline inline-flex items-center gap-1 text-[13px]">
-        <Trash2 className="size-3.5" aria-hidden /> Verwijder
+      <button type="submit" className="admin-icon-btn admin-icon-btn-danger" title="Verwijderen" aria-label="Verwijderen">
+        <Trash2 className="size-[17px]" aria-hidden />
       </button>
     </form>
   );

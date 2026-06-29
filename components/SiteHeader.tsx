@@ -64,7 +64,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav aria-label="Hoofdnavigatie" className="hidden md:flex items-center gap-4 lg:gap-7">
+          <nav aria-label="Hoofdnavigatie" className="hidden md:flex items-center gap-3 lg:gap-6 xl:gap-7">
             {NAV.map((l) => {
               const active = pathname === l.href || (l.href !== "/" && pathname.startsWith(l.href));
               return (
@@ -73,7 +73,7 @@ export function SiteHeader() {
                   href={l.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative py-2 text-[14.5px] font-semibold tracking-tight transition-colors",
+                    "relative py-2 text-[13px] lg:text-[14.5px] font-semibold tracking-tight transition-colors whitespace-nowrap",
                     active ? "text-[var(--color-red)]" : "text-[var(--color-charcoal)] hover:text-[var(--color-ink)]",
                   )}
                 >
@@ -91,18 +91,6 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <a
-              href={BUSINESS.telHref}
-              aria-label={`Bel ${BUSINESS.phone}`}
-              className="hidden lg:inline-flex btn btn-ghost btn-sm gap-2"
-            >
-              <Phone className="size-[15px]" aria-hidden />
-              <span className="tabular">{BUSINESS.phone}</span>
-            </a>
-            <Link href="/aanbod" className="hidden lg:inline-flex btn btn-primary btn-sm gap-2">
-              Bekijk aanbod
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
             <button
               type="button"
               aria-expanded={open}
@@ -181,9 +169,6 @@ export function SiteHeader() {
                 <a href={BUSINESS.whatsapp} target="_blank" rel="noopener" className="btn btn-whatsapp w-full">
                   WhatsApp
                 </a>
-                <Link href="/aanbod" onClick={() => setOpen(false)} className="btn btn-primary w-full">
-                  Bekijk aanbod
-                </Link>
                 <p className="label-mono mt-2 text-center">{BUSINESS.fullAddress}</p>
               </div>
             </motion.aside>

@@ -25,7 +25,13 @@ export function Footer() {
         </svg>
       </div>
 
-      <div className="container pt-14 md:pt-16 grid gap-10 md:gap-8 md:grid-cols-12">
+      {/* Subtle, clean dot pattern over the dark footer */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-[0.6] [background-image:radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:22px_22px]"
+      />
+
+      <div className="relative container pt-14 md:pt-16 grid gap-10 md:gap-8 md:grid-cols-12">
         {/* Brand */}
         <div className="md:col-span-4">
           <Logo onDark height={38} />
@@ -98,7 +104,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="container mt-10 py-6 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-[12.5px]">
+      <div className="relative container mt-10 py-6 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-[12.5px]">
         <span>
           © {new Date().getFullYear()} {BUSINESS.name} · KVK {BUSINESS.kvk}
         </span>

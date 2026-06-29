@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 import { CarCard } from "@/components/public/CarCard";
+import { ClosingCTA } from "@/components/public/ClosingCTA";
 import { CarFilters } from "@/components/public/CarFilters";
 import { SortSelect } from "@/components/public/SortSelect";
 import { WhatsAppCTA } from "@/components/public/WhatsAppCTA";
@@ -66,6 +67,7 @@ export default async function AanbodPage({ searchParams }: { searchParams: Promi
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
+    <>
     <div className="container py-8 md:py-12">
       <Breadcrumbs items={[{ href: "/", label: "Home" }, { label: "Aanbod" }]} />
 
@@ -116,19 +118,17 @@ export default async function AanbodPage({ searchParams }: { searchParams: Promi
       {pageCount > 1 && <Pagination page={page} pageCount={pageCount} searchParams={sp} />}
 
       <div className="mt-12 pt-8 border-t border-[var(--color-line)] text-center">
-        <p className="text-[15px] text-[var(--color-charcoal)]">
-          Niet gevonden wat u zoekt? Wij gaan graag voor u op zoek naar de juiste auto.
-        </p>
-        <div className="mt-5 inline-flex flex-wrap gap-3 justify-center">
-          <Link href="/auto-zoeken" className="btn btn-primary">Plaats een zoekopdracht</Link>
-          <WhatsAppCTA className="!inline-flex w-auto px-5" />
-        </div>
-        <p className="mt-8 text-[12.5px] text-[var(--color-steel)] max-w-2xl mx-auto">
+        <p className="text-[12.5px] text-[var(--color-steel)] max-w-2xl mx-auto">
           {DISCLAIMER} Auto&apos;s kunnen snel verkocht zijn — bel of app altijd vooraf via{" "}
           <a href={BUSINESS.telHref} className="link tabular">{BUSINESS.phone}</a>.
         </p>
       </div>
     </div>
+    <ClosingCTA
+      title="Niet gevonden wat u zoekt?"
+      subtitle="Plaats een gratis zoekopdracht of bel ons — wij vinden de juiste occasion binnen ons netwerk."
+    />
+    </>
   );
 }
 

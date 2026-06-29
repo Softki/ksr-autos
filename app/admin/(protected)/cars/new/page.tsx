@@ -13,7 +13,7 @@ export default function NewCarPage() {
           <Eyebrow>Voorraad</Eyebrow>
           <h1 className="display-2 mt-2">Nieuwe auto toevoegen</h1>
           <p className="mt-2 text-[14px] text-[var(--color-steel)]">
-            Vul de basisgegevens in. U kunt de auto later verder verrijken met extra foto&apos;s en opties.
+            Vul de gegevens in en sla op — daarna voeg je direct foto&apos;s toe.
           </p>
         </div>
         <Link href="/admin/cars" className="btn btn-secondary btn-sm">Terug naar overzicht</Link>

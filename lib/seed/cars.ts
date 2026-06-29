@@ -28,7 +28,14 @@ export const seedCars: Car[] = [
     status: "available",
     is_featured: true,
     main_image: "https://media-cdn.vwe.nl/Images/164669066.jpg",
-    description: "Openingstijden & Afspraak maken\n\nWij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak.\n\nOmdat wij vaak onderweg zijn voor nieuwe auto's en een deel van onze voorraad op een tweede locatie staat, adviseren wij altijd om vooraf even contact met ons op te nemen. Zo kunnen we ervoor zorgen dat we u snel kunnen helpen en dat de auto die u zoekt voor u klaarstaat!\n\nBel of App ons gerust voor meer informatie of om een afspraak in te plannen.\n\n0618580091",
+    images: [
+      { id: "c1-i1", car_id: "c1", image_url: "https://media-cdn.vwe.nl/Images/164669066.jpg", sort_order: 0, is_main: true },
+      { id: "c1-i2", car_id: "c1", image_url: "https://media-cdn.vwe.nl/Images/164669067.jpg", sort_order: 1, is_main: false },
+      { id: "c1-i3", car_id: "c1", image_url: "https://media-cdn.vwe.nl/Images/164669068.jpg", sort_order: 2, is_main: false },
+      { id: "c1-i4", car_id: "c1", image_url: "https://media-cdn.vwe.nl/Images/164669069.jpg", sort_order: 3, is_main: false },
+      { id: "c1-i5", car_id: "c1", image_url: "https://media-cdn.vwe.nl/Images/164669070.jpg", sort_order: 4, is_main: false },
+    ],
+    description: "Compacte en zuinige Audi A1 - ideaal voor de stad en het dagelijkse woon-werkverkeer. Netjes onderhouden, APK gekeurd en met een complete uitrusting. Een wendbare, betrouwbare instapper in een premium jasje.",
     options: [
       "Airbag bestuurder", "Airbag passagier", "Airbag(s) hoofd achter", "Airbag(s) hoofd voor",
       "Airbag(s) side voor", "Airco", "Anti Blokkeer Systeem (ABS)", "Armsteun voor",
@@ -61,8 +68,15 @@ export const seedCars: Car[] = [
     vat_type: "Marge",
     status: "available",
     is_featured: true,
-    main_image: "https://media-cdn.vwe.nl/Images/164669200.jpg", // placeholder, will be updated via admin
-    description: "Nette BMW 335i in goede staat. De auto is altijd met zorg behandeld en volledig onderhouden. Zowel technisch als optisch verkeert hij in nette conditie. De krachtige motor in combinatie met het comfortabele rijgedrag zorgt elke rit weer voor plezier, zowel bij rustig als sportief rijden.\n\nHet is een echte rijdersauto die strak op de weg ligt en soepel schakelt. Het interieur en exterieur zien er verzorgd uit, wat laat zien dat er goed op de auto is gelet. Geen afgetrapt exemplaar, maar een auto die duidelijk is gereden door een liefhebber.\n\nKortom: een complete en fijne BMW voor iemand die op zoek is naar rijplezier, comfort en vermogen in één. Instappen en genieten.\n\n" + "Wij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak. Bel of app ons vooraf, dan zorgen we dat de auto klaarstaat.",
+    main_image: "https://media-cdn.vwe.nl/Images/164669200.jpg",
+    images: [
+      { id: "c2-i1", car_id: "c2", image_url: "https://media-cdn.vwe.nl/Images/164669200.jpg", sort_order: 0, is_main: true },
+      { id: "c2-i2", car_id: "c2", image_url: "https://media-cdn.vwe.nl/Images/164669203.jpg", sort_order: 1, is_main: false },
+      { id: "c2-i3", car_id: "c2", image_url: "https://media-cdn.vwe.nl/Images/164669204.jpg", sort_order: 2, is_main: false },
+      { id: "c2-i4", car_id: "c2", image_url: "https://media-cdn.vwe.nl/Images/164669205.jpg", sort_order: 3, is_main: false },
+      { id: "c2-i5", car_id: "c2", image_url: "https://media-cdn.vwe.nl/Images/164669206.jpg", sort_order: 4, is_main: false },
+    ],
+    description: "Nette BMW 335i in goede staat. De auto is altijd met zorg behandeld en volledig onderhouden. Zowel technisch als optisch verkeert hij in nette conditie. De krachtige motor in combinatie met het comfortabele rijgedrag zorgt elke rit weer voor plezier, zowel bij rustig als sportief rijden.\n\nHet is een echte rijdersauto die strak op de weg ligt en soepel schakelt. Het interieur en exterieur zien er verzorgd uit, wat laat zien dat er goed op de auto is gelet. Geen afgetrapt exemplaar, maar een auto die duidelijk is gereden door een liefhebber.\n\nKortom: een complete en fijne BMW voor iemand die op zoek is naar rijplezier, comfort en vermogen in één. Instappen en genieten.",
     options: [
       "M Sport", "Bi-xenon", "Adaptieve cruise control", "Sportstoelen", "Leder bekleding",
       "Schuifdak", "18 inch velgen", "Navigatie", "Clima", "PDC", "Stoelverwarming"
@@ -91,7 +105,14 @@ export const seedCars: Car[] = [
     status: "available",
     is_featured: false,
     main_image: "https://media-cdn.vwe.nl/Images/170195043.jpg",
-    description: "Let op Automaat bak niet goed!\nAuto rijdt en schakelt, automaat gaat in storing!!\n\n" + "Wij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak. Bel of app ons vooraf, dan zorgen we dat de auto klaarstaat.",
+    images: [
+      { id: "c3-i1", car_id: "c3", image_url: "https://media-cdn.vwe.nl/Images/170195043.jpg", sort_order: 0, is_main: true },
+      { id: "c3-i2", car_id: "c3", image_url: "https://media-cdn.vwe.nl/Images/170195044.jpg", sort_order: 1, is_main: false },
+      { id: "c3-i3", car_id: "c3", image_url: "https://media-cdn.vwe.nl/Images/170195045.jpg", sort_order: 2, is_main: false },
+      { id: "c3-i4", car_id: "c3", image_url: "https://media-cdn.vwe.nl/Images/170195046.jpg", sort_order: 3, is_main: false },
+      { id: "c3-i5", car_id: "c3", image_url: "https://media-cdn.vwe.nl/Images/170195047.jpg", sort_order: 4, is_main: false },
+    ],
+    description: "Let op Automaat bak niet goed!\nAuto rijdt en schakelt, automaat gaat in storing!!",
     options: ["7 persoons", "Leer", "Airco", "Trekhaak", "Cruise control"],
   },
   {
@@ -117,7 +138,14 @@ export const seedCars: Car[] = [
     status: "available",
     is_featured: true,
     main_image: "https://media-cdn.vwe.nl/Images/170195100.jpg",
-    description: "Auto heeft rondom beschadigingen.\n\nWij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak.",
+    images: [
+      { id: "c4-i1", car_id: "c4", image_url: "https://media-cdn.vwe.nl/Images/170195100.jpg", sort_order: 0, is_main: true },
+      { id: "c4-i2", car_id: "c4", image_url: "https://media-cdn.vwe.nl/Images/170195101.jpg", sort_order: 1, is_main: false },
+      { id: "c4-i3", car_id: "c4", image_url: "https://media-cdn.vwe.nl/Images/170195102.jpg", sort_order: 2, is_main: false },
+      { id: "c4-i4", car_id: "c4", image_url: "https://media-cdn.vwe.nl/Images/170195103.jpg", sort_order: 3, is_main: false },
+      { id: "c4-i5", car_id: "c4", image_url: "https://media-cdn.vwe.nl/Images/170195105.jpg", sort_order: 4, is_main: false },
+    ],
+    description: "Auto heeft rondom beschadigingen.",
     options: ["Airco", "Cruise control", "Automaat"],
   },
   {
@@ -142,7 +170,7 @@ export const seedCars: Car[] = [
     status: "available",
     is_featured: false,
     main_image: "https://media-cdn.vwe.nl/Images/placeholder-a6.jpg",
-    description: "Ruime en comfortabele Audi A6 Avant. Goed onderhouden en klaar voor gebruik. " + "Wij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak.",
+    description: "Ruime en comfortabele Audi A6 Avant. Goed onderhouden en klaar voor gebruik.",
     options: ["Navigatie", "Clima", "Cruise", "Trekhaak", "PDC"],
   },
   {
@@ -167,7 +195,7 @@ export const seedCars: Car[] = [
     status: "available",
     is_featured: false,
     main_image: "https://media-cdn.vwe.nl/Images/placeholder-corsa.jpg",
-    description: "Kleine zuinige en betrouwbare auto. Ideaal voor stad en korte afstanden. APK gekeurd en goed onderhouden.\n\nWij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak.",
+    description: "Kleine zuinige en betrouwbare auto. Ideaal voor stad en korte afstanden. APK gekeurd en goed onderhouden.",
     options: ["Airco", "Cruise control"],
   },
   {
@@ -192,7 +220,7 @@ export const seedCars: Car[] = [
     status: "reserved",
     is_featured: false,
     main_image: "https://media-cdn.vwe.nl/Images/placeholder-cmax.jpg",
-    description: "Ruime gezinswagen. Gereserveerd.\n\nWij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak.",
+    description: "Ruime gezinswagen. Gereserveerd.",
     options: ["Trekhaak", "Airco", "Cruise", "Nap"],
   },
   {
@@ -217,7 +245,7 @@ export const seedCars: Car[] = [
     status: "available",
     is_featured: false,
     main_image: "https://media-cdn.vwe.nl/Images/placeholder-fox.jpg",
-    description: "Compacte en zuinige Volkswagen. Goede instapauto.\n\nWij zijn van maandag tot en met zaterdag van 09:00 tot 17:00 uur geopend. Voor de beste service werken wij het liefst op afspraak.",
+    description: "Compacte en zuinige Volkswagen. Goede instapauto.",
     options: ["Hoogzit", "Nap", "Apk"],
   },
 ];

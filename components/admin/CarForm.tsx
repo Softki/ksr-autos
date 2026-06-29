@@ -96,18 +96,6 @@ export function CarForm({ car, className }: Props) {
         </Grid>
       </Section>
 
-      <Section title="Hoofdafbeelding">
-        <Input
-          label="Hoofdfoto URL"
-          name="main_image"
-          defaultValue={car?.main_image}
-          placeholder="https://… of Supabase Storage URL"
-        />
-        <p className="field-help">
-          In de volledige Supabase-versie kunt u meerdere foto&apos;s uploaden en sorteren. Voor nu geeft u een directe URL op.
-        </p>
-      </Section>
-
       <Section title="Omschrijving & opties">
         <Textarea label="Omschrijving" name="description" defaultValue={car?.description} rows={8} />
         <Textarea

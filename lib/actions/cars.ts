@@ -12,7 +12,7 @@ import {
   upsertCar,
   type CarUpsertInput,
 } from "@/lib/data/cars";
-import type { CarStatus } from "@/lib/types";
+import type { Car, CarStatus } from "@/lib/types";
 import type { CarFormState } from "./state";
 
 const STATUS_VALUES = ["draft", "available", "reserved", "sold", "hidden"] as const;
@@ -103,7 +103,8 @@ export async function upsertCarAction(
     main_image: data.main_image || undefined,
   };
 
-  if (!input.id) {
+  const isNew = !input.id;
+  if (isNew) {
     input.slug = buildSlug({
       brand: input.brand,
       model: input.model,
@@ -112,17 +113,22 @@ export async function upsertCarAction(
     });
   }
 
+  let saved: Car;
   try {
-    const saved = await upsertCar(input);
-    revalidatePath("/admin/cars");
-    revalidatePath(`/aanbod/${saved.slug}`);
-    revalidatePath("/aanbod");
-    revalidatePath("/");
-    redirect("/admin/cars?saved=1");
+    saved = await upsertCar(input);
   } catch (err) {
     if (process.env.NODE_ENV !== "production") console.error("[upsertCarAction]", err);
     return { ok: false, message: "Opslaan mislukt. Probeer opnieuw." };
   }
+
+  revalidatePath("/admin/cars");
+  revalidatePath(`/aanbod/${saved.slug}`);
+  revalidatePath("/aanbod");
+  revalidatePath("/");
+  // redirect() must live OUTSIDE the try/catch above: it throws NEXT_REDIRECT,
+  // which the catch would otherwise swallow and report as a save failure.
+  // New cars go to their edit page so photos can be added right away.
+  redirect(isNew ? `/admin/cars/${saved.id}/edit?created=1` : "/admin/cars?saved=1");
 }
 
 export async function deleteCarAction(formData: FormData): Promise<void> {

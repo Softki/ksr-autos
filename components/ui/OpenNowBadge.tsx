@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /** Ma–Za 09:00–17:00 Europe/Amsterdam. Sunday: op afspraak (counts as closed). */
 function isOpenNL(): boolean {
@@ -16,14 +16,16 @@ function isOpenNL(): boolean {
   return hour >= 9 && hour < 17;
 }
 
-export function OpenNowBadge() {
-  const [open, setOpen] = useState<boolean | null>(null);
+function subscribe(onChange: () => void) {
+  const id = setInterval(onChange, 60_000);
+  return () => clearInterval(id);
+}
 
-  useEffect(() => {
-    setOpen(isOpenNL());
-    const id = setInterval(() => setOpen(isOpenNL()), 60_000);
-    return () => clearInterval(id);
-  }, []);
+export function OpenNowBadge() {
+  // useSyncExternalStore keeps SSR + hydration aligned (server snapshot is null,
+  // so nothing renders until the client knows the real time) and re-checks every
+  // minute — no setState inside an effect.
+  const open = useSyncExternalStore<boolean | null>(subscribe, isOpenNL, () => null);
 
   // Render nothing until mounted to avoid SSR/CSR mismatch.
   if (open === null) return null;

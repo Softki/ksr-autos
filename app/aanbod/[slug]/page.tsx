@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Phone } from "lucide-react";
+import { ArrowLeft, Phone, Check } from "lucide-react";
 
 import { Breadcrumbs } from "@/components/public/Breadcrumbs";
 import { ImageGallery } from "@/components/public/ImageGallery";
+import { CarDescription } from "@/components/public/CarDescription";
 import { SpecGrid } from "@/components/public/SpecGrid";
-import { StatusBadge } from "@/components/public/StatusBadge";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { InquiryForm } from "@/components/forms/InquiryForm";
+import { CarLeadForm } from "@/components/forms/CarLeadForm";
 import { CarCard } from "@/components/public/CarCard";
+import { ClosingCTA } from "@/components/public/ClosingCTA";
 import { getCarBySlug, getRelatedCars } from "@/lib/data/cars";
-import { BUSINESS, DISCLAIMER, STANDARD_APPOINTMENT_TEXT } from "@/lib/constants";
+import { BUSINESS, DISCLAIMER } from "@/lib/constants";
 import { formatKm, formatPrice, formatDate, carHeadline, whatsAppLink } from "@/lib/utils/format";
 import type { Car } from "@/lib/types";
 
@@ -84,12 +85,7 @@ export default async function CarDetail({ params }: Props) {
                 <h2 id="omschrijving-heading" className="font-display text-[24px] md:text-[26px] font-extrabold tracking-tight">
                   Omschrijving
                 </h2>
-                <p className="mt-3 text-[15.5px] leading-[1.7] text-[var(--color-charcoal)] whitespace-pre-line max-w-prose">
-                  {car.description}
-                </p>
-                <div className="mt-4 card border-l-[3px] border-l-[var(--color-red)] p-5 text-[14px] leading-relaxed text-[var(--color-charcoal)]">
-                  {STANDARD_APPOINTMENT_TEXT}
-                </div>
+                <CarDescription text={car.description} />
               </section>
             )}
 
@@ -105,34 +101,23 @@ export default async function CarDetail({ params }: Props) {
                 <h2 id="opties-heading" className="font-display text-[24px] md:text-[26px] font-extrabold tracking-tight mb-4">
                   Opties &amp; uitrusting
                 </h2>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1.5 text-[14px]">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                   {car.options.map((o) => (
-                    <li key={o} className="flex gap-2 items-start">
-                      <span aria-hidden className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[var(--color-red)] shrink-0" />
-                      {o}
+                    <li
+                      key={o}
+                      className="flex items-center gap-2.5 rounded-[var(--radius-md)] border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 text-[14px] font-medium text-[var(--color-charcoal)] transition-colors hover:border-[var(--color-line-strong)] hover:bg-[var(--color-paper)]"
+                    >
+                      <span aria-hidden className="grid place-items-center size-5 shrink-0 rounded-full bg-[var(--color-red-tint)] text-[var(--color-red)]">
+                        <Check className="size-3" strokeWidth={3} />
+                      </span>
+                      <span className="min-w-0">{o}</span>
                     </li>
                   ))}
                 </ul>
               </section>
             )}
 
-            <div id="proefrit" className="card p-6 md:p-8 scroll-mt-24">
-              <Eyebrow>Proefrit</Eyebrow>
-              <h2 className="font-display text-[22px] font-extrabold mt-3">Proefrit aanvragen</h2>
-              <p className="mt-2 text-[var(--color-charcoal)]">Vul het formulier in — we nemen zo snel mogelijk contact met u op.</p>
-              <div className="mt-5">
-                <InquiryForm type="test_drive" carId={car.id} carTitle={car.title} />
-              </div>
-            </div>
-
-            <div id="inruil" className="card p-6 md:p-8 scroll-mt-24">
-              <Eyebrow>Inruilen</Eyebrow>
-              <h2 className="font-display text-[22px] font-extrabold mt-3">Uw huidige auto inruilen?</h2>
-              <p className="mt-2 text-[var(--color-charcoal)]">Vul uw gegevens in. Foto&apos;s van uw auto kunt u na het indienen sturen via WhatsApp of e-mail.</p>
-              <div className="mt-5">
-                <InquiryForm type="trade_in" carId={car.id} carTitle={car.title} />
-              </div>
-            </div>
+            <CarLeadForm carId={car.id} carTitle={car.title} />
 
             <p className="text-[12.5px] text-[var(--color-steel)] max-w-prose">{DISCLAIMER}</p>
           </div>
@@ -144,7 +129,14 @@ export default async function CarDetail({ params }: Props) {
                 <div className="lbl text-[10px] text-[var(--color-tan)]">
                   {car.body_type ?? "Occasion"}{car.year ? ` · ${car.year}` : ""}
                 </div>
-                <h1 className="font-display text-[22px] md:text-[23px] font-extrabold leading-tight mt-2">{headline}</h1>
+                <h1 className="font-display text-[22px] md:text-[23px] font-extrabold leading-tight mt-2">
+                  {car.brand} {car.model}
+                </h1>
+                {car.version && (
+                  <p className="mt-1.5 text-[13.5px] leading-snug text-[var(--color-steel)] font-medium">
+                    {car.version.split("|").map((p) => p.trim()).filter(Boolean).join(" · ")}
+                  </p>
+                )}
 
                 <div className="font-display font-extrabold text-[34px] md:text-[38px] text-[var(--color-red)] mt-4 leading-none tabular">
                   {formatPrice(car.price)}
@@ -171,8 +163,8 @@ export default async function CarDetail({ params }: Props) {
                 </a>
 
                 <div className="grid grid-cols-2 gap-2.5 mt-2.5">
-                  <a href="#proefrit" className="btn btn-secondary">Proefrit</a>
-                  <a href="#inruil" className="btn btn-secondary">Inruilen</a>
+                  <a href="#lead" className="btn btn-secondary">Proefrit</a>
+                  <a href="#lead" className="btn btn-secondary">Inruilen</a>
                 </div>
                 <a href={BUSINESS.telHref} className="btn btn-dark w-full mt-2.5 gap-2 tabular">
                   <Phone className="size-4" aria-hidden /> Bel {BUSINESS.phone}
@@ -184,25 +176,6 @@ export default async function CarDetail({ params }: Props) {
                 </p>
               </div>
 
-              <div className="card p-5">
-                <div className="flex items-center justify-between gap-2">
-                  <Eyebrow>Bezoekadres</Eyebrow>
-                  <StatusBadge status={car.status} />
-                </div>
-                <div className="mt-3 text-[14px]">
-                  <div className="font-semibold">{BUSINESS.name}</div>
-                  <div>{BUSINESS.address}</div>
-                  <div>{BUSINESS.postal} {BUSINESS.city}</div>
-                </div>
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(BUSINESS.fullAddress)}`}
-                  target="_blank"
-                  rel="noopener"
-                  className="link mt-3 inline-block text-[13px]"
-                >
-                  Routebeschrijving →
-                </a>
-              </div>
             </div>
           </aside>
         </div>
@@ -229,6 +202,12 @@ export default async function CarDetail({ params }: Props) {
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+
+      <ClosingCTA
+        title="Interesse in deze auto?"
+        subtitle="Bel of app ons voor de actuele beschikbaarheid, een proefrit of meer foto's — we helpen u graag verder."
+        waMessage={`Hallo KSR Auto's, ik heb interesse in de ${headline}. Kunt u mij meer vertellen?`}
+      />
     </article>
   );
 }
