@@ -50,29 +50,19 @@ export function SiteHeader() {
           scrolled ? "shadow-[0_10px_30px_-24px_rgb(20_18_16/0.5)]" : "",
         )}
       >
-        <div className="container flex items-center justify-between gap-6 h-[var(--header-h)] md:h-[var(--header-h-md)]">
-          <div className="flex items-center gap-2.5 min-w-0 shrink-0">
-            <Link
-              href="/"
-              aria-label="KSR Auto's home"
-              className="flex items-center gap-3 focus-ring -ml-1 pl-1 rounded-sm shrink-0"
-            >
-              <Logo priority height={34} />
-              <span className="hidden xl:flex flex-col leading-none pl-3 ml-1 border-l border-[var(--color-line-strong)]">
-                <span className="lbl text-[9px] tracking-[0.22em] text-[var(--color-mute)]">
-                  Occasions · Ridderkerk
-                </span>
+        <div className="container flex items-center justify-between gap-3 md:gap-6 h-[var(--header-h)] md:h-[var(--header-h-md)]">
+          <Link
+            href="/"
+            aria-label="KSR Auto's home"
+            className="flex items-center gap-3 focus-ring -ml-1 pl-1 rounded-sm shrink-0"
+          >
+            <Logo priority height={34} />
+            <span className="hidden xl:flex flex-col leading-none pl-3 ml-1 border-l border-[var(--color-line-strong)]">
+              <span className="lbl text-[9px] tracking-[0.22em] text-[var(--color-mute)]">
+                Occasions · Ridderkerk
               </span>
-            </Link>
-            {/* Mobile-only: clean primary-color appointment text next to the logo.
-                Desktop has the full button on the right, so this is hidden at md+. */}
-            <Link
-              href="/contact"
-              className="md:hidden whitespace-nowrap rounded-sm border-l border-[var(--color-line-strong)] pl-2.5 text-[13px] font-bold text-[var(--color-red)] transition-colors hover:text-[var(--color-red-strong)] focus-ring"
-            >
-              Afspraak maken
-            </Link>
-          </div>
+            </span>
+          </Link>
 
           <nav aria-label="Hoofdnavigatie" className="hidden md:flex items-center gap-3 lg:gap-6 xl:gap-7">
             {NAV.map((l) => {
@@ -116,6 +106,15 @@ export function SiteHeader() {
                 <span className="hidden lg:inline">Afspraak maken</span>
               </Link>
             </div>
+            {/* Mobile: designed primary appointment pill, in the action area next
+                to the hamburger. (Not a `.btn`, so md:hidden works directly.) */}
+            <Link
+              href="/contact"
+              className="md:hidden inline-flex items-center gap-1.5 rounded-full bg-[var(--color-red)] py-2 pl-2.5 pr-3.5 text-[12.5px] font-bold leading-none text-white shadow-[0_8px_18px_-8px_rgba(209,87,40,0.85)] transition-transform active:scale-95 focus-ring"
+            >
+              <CalendarPlus className="size-[15px]" aria-hidden />
+              Afspraak maken
+            </Link>
             {/* Mobile: hamburger */}
             <div className="md:hidden">
               <button
