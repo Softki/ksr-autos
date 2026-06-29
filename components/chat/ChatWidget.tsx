@@ -40,6 +40,10 @@ const INITIAL_GREETING: Msg = {
     "Hallo! Ik help met vragen over ons aanbod, openingstijden en contact. Twijfel? App of bel ons gerust.",
 };
 
+// Shared style for the header control buttons (minimaliseren / sluiten).
+const HEADER_BTN =
+  "grid size-9 place-items-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60";
+
 /* -------------------------------------------------------------------------- */
 /*  Linkify: turn URLs / /aanbod... paths into <a> elements                  */
 /* -------------------------------------------------------------------------- */
@@ -129,6 +133,33 @@ export function ChatWidget() {
     window.addEventListener("ksr:open-chat", handler);
     return () => window.removeEventListener("ksr:open-chat", handler);
   }, []);
+
+  // Lock background scroll only while the FULL-SCREEN mobile chat is open.
+  // On desktop the panel floats, so the page must stay scrollable.
+  useEffect(() => {
+    if (!open) return;
+    const mq = window.matchMedia("(max-width: 639px)");
+    const apply = () => document.body.classList.toggle("scroll-lock", mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      document.body.classList.remove("scroll-lock");
+    };
+  }, [open]);
+
+  // Minimaliseren: verberg het paneel, behoud het gesprek.
+  function minimize() {
+    setOpen(false);
+  }
+  // Sluiten: verberg het paneel én start een schoon gesprek.
+  function closeChat() {
+    setOpen(false);
+    setMessages([INITIAL_GREETING]);
+    setChipsUsed(false);
+    setError(undefined);
+    setInput("");
+  }
 
   if (pathname.startsWith("/admin")) return null;
 
@@ -305,37 +336,37 @@ export function ChatWidget() {
             animate="visible"
             exit="exit"
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed z-[60] bottom-[72px] md:bottom-[80px] right-4 md:right-6 w-[min(380px,92vw)] max-h-[72vh] rounded-xl overflow-hidden shadow-elevated bg-[var(--color-paper)] border border-[var(--color-line)] flex flex-col"
+            className="fixed z-[60] flex flex-col overflow-hidden bg-[var(--color-paper)] shadow-elevated inset-0 h-full w-full rounded-none sm:inset-auto sm:bottom-[80px] sm:right-6 sm:h-auto sm:max-h-[72vh] sm:w-[min(400px,92vw)] sm:rounded-2xl sm:border sm:border-[var(--color-line)]"
           >
             {/* Header */}
-            <header className="surface-graphite dark-section px-4 py-3 flex items-center justify-between flex-shrink-0">
-              <div className="flex items-center gap-2.5">
+            <header className="surface-graphite dark-section flex items-center justify-between gap-2 flex-shrink-0 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:pt-3">
+              <div className="flex items-center gap-2.5 min-w-0">
                 {/* Avatar / icon */}
                 <div className="size-8 rounded-full bg-[var(--color-red)] flex items-center justify-center flex-shrink-0">
                   <MessageCircle className="size-4 text-white" aria-hidden />
                 </div>
-                <div>
-                  <div className="font-semibold text-white text-[14px] leading-tight">KSR Assistent</div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-white text-[14px] leading-tight truncate">KSR Assistent</div>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="size-1.5 rounded-full bg-[var(--color-whatsapp)]" aria-hidden />
-                    <span className="text-white/60 text-[11px] label-mono">Online</span>
+                    <span className="text-white/60 text-[11px] label-mono">Online · reageert direct</span>
                   </div>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Sluit chat"
-                className="text-white/70 hover:text-white transition-colors p-1 rounded-md hover:bg-white/10"
-              >
-                <X className="size-5" aria-hidden />
-              </button>
+              <div className="flex items-center gap-0.5 flex-shrink-0">
+                <button type="button" onClick={minimize} aria-label="Chat minimaliseren" title="Minimaliseren" className={HEADER_BTN}>
+                  <ChevronDown className="size-5" aria-hidden />
+                </button>
+                <button type="button" onClick={closeChat} aria-label="Chat sluiten" title="Sluiten" className={HEADER_BTN}>
+                  <X className="size-5" aria-hidden />
+                </button>
+              </div>
             </header>
 
             {/* Message list */}
             <div
               ref={scrollRef}
-              className="flex-1 overflow-y-auto p-3 space-y-2 bg-[var(--color-surface)]"
+              className="flex-1 overflow-y-auto overscroll-contain bg-[var(--color-surface)] px-4 py-4 space-y-2.5 sm:px-3 sm:py-3"
               aria-live="polite"
               aria-atomic="false"
             >
@@ -353,10 +384,10 @@ export function ChatWidget() {
                 >
                   <div
                     className={cn(
-                      "max-w-[82%] px-3.5 py-2 rounded-2xl text-[13.5px] leading-relaxed",
+                      "max-w-[85%] sm:max-w-[82%] px-4 py-2.5 rounded-2xl text-[14.5px] leading-relaxed shadow-sm",
                       m.role === "user"
-                        ? "bg-[var(--color-ink)] text-white rounded-br-sm"
-                        : "bg-[var(--color-paper)] border border-[var(--color-line)] text-[var(--color-ink)] rounded-bl-sm",
+                        ? "bg-[var(--color-ink)] text-white rounded-br-md"
+                        : "bg-[var(--color-paper)] border border-[var(--color-line)] text-[var(--color-ink)] rounded-bl-md",
                     )}
                   >
                     {m.role === "assistant" ? (
@@ -426,7 +457,7 @@ export function ChatWidget() {
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="input text-[13.5px] min-h-[40px] py-2 flex-1"
+                className="input text-[14.5px] min-h-[44px] py-2 flex-1"
                 placeholder="Vraag over aanbod of openingstijden…"
                 maxLength={600}
                 aria-label="Bericht"
@@ -453,7 +484,7 @@ export function ChatWidget() {
             </form>
 
             {/* Disclaimer footer */}
-            <p className="text-center text-[10.5px] tracking-wide text-[var(--color-steel)] py-2 px-3 border-t border-[var(--color-line)] flex-shrink-0 bg-[var(--color-paper)]">
+            <p className="text-center text-[10.5px] tracking-wide text-[var(--color-steel)] px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:pb-2 border-t border-[var(--color-line)] flex-shrink-0 bg-[var(--color-paper)]">
               Alleen bedrijfsinfo + actuele voorraad. Twijfel?{" "}
               <a href={BUSINESS.telHref} className="link tabular">
                 Bel {BUSINESS.phone}

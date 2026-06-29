@@ -91,27 +91,34 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            {/* Desktop: prominent appointment CTA → contactpagina.
-                Full label on lg+; icon-only at md so it never crowds the nav. */}
-            <Link
-              href="/contact"
-              aria-label="Afspraak maken"
-              className="hidden md:inline-flex btn btn-primary btn-sm gap-2 whitespace-nowrap focus-ring"
-            >
-              <CalendarPlus className="size-4" aria-hidden />
-              <span className="hidden lg:inline">Afspraak maken</span>
-            </Link>
+            {/* Visibility is set on these WRAPPERS, not on the buttons: the
+                unlayered `.btn { display: inline-flex }` rule in globals.css
+                outranks Tailwind's `hidden`/`md:*` (utilities layer), so a
+                `md:hidden` directly on a `.btn` is ignored. */}
+            {/* Desktop: appointment CTA → contactpagina (icon-only at md, full label lg+) */}
+            <div className="hidden md:block">
+              <Link
+                href="/contact"
+                aria-label="Afspraak maken"
+                className="btn btn-primary btn-sm gap-2 whitespace-nowrap focus-ring"
+              >
+                <CalendarPlus className="size-4" aria-hidden />
+                <span className="hidden lg:inline">Afspraak maken</span>
+              </Link>
+            </div>
             {/* Mobile: hamburger */}
-            <button
-              type="button"
-              aria-expanded={open}
-              aria-controls="mobile-drawer"
-              aria-label={open ? "Sluit menu" : "Open menu"}
-              onClick={() => setOpen((v) => !v)}
-              className="md:hidden btn btn-ghost btn-icon focus-ring"
-            >
-              {open ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
+            <div className="md:hidden">
+              <button
+                type="button"
+                aria-expanded={open}
+                aria-controls="mobile-drawer"
+                aria-label={open ? "Sluit menu" : "Open menu"}
+                onClick={() => setOpen((v) => !v)}
+                className="btn btn-ghost btn-icon focus-ring"
+              >
+                {open ? <X className="size-5" /> : <Menu className="size-5" />}
+              </button>
+            </div>
           </div>
         </div>
       </header>
