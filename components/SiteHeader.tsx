@@ -51,18 +51,28 @@ export function SiteHeader() {
         )}
       >
         <div className="container flex items-center justify-between gap-6 h-[var(--header-h)] md:h-[var(--header-h-md)]">
-          <Link
-            href="/"
-            aria-label="KSR Auto's home"
-            className="flex items-center gap-3 focus-ring -ml-1 pl-1 rounded-sm shrink-0"
-          >
-            <Logo priority height={34} />
-            <span className="hidden xl:flex flex-col leading-none pl-3 ml-1 border-l border-[var(--color-line-strong)]">
-              <span className="lbl text-[9px] tracking-[0.22em] text-[var(--color-mute)]">
-                Occasions · Ridderkerk
+          <div className="flex items-center gap-2.5 min-w-0 shrink-0">
+            <Link
+              href="/"
+              aria-label="KSR Auto's home"
+              className="flex items-center gap-3 focus-ring -ml-1 pl-1 rounded-sm shrink-0"
+            >
+              <Logo priority height={34} />
+              <span className="hidden xl:flex flex-col leading-none pl-3 ml-1 border-l border-[var(--color-line-strong)]">
+                <span className="lbl text-[9px] tracking-[0.22em] text-[var(--color-mute)]">
+                  Occasions · Ridderkerk
+                </span>
               </span>
-            </span>
-          </Link>
+            </Link>
+            {/* Mobile-only: clean primary-color appointment text next to the logo.
+                Desktop has the full button on the right, so this is hidden at md+. */}
+            <Link
+              href="/contact"
+              className="md:hidden whitespace-nowrap rounded-sm border-l border-[var(--color-line-strong)] pl-2.5 text-[13px] font-bold text-[var(--color-red)] transition-colors hover:text-[var(--color-red-strong)] focus-ring"
+            >
+              Afspraak maken
+            </Link>
+          </div>
 
           <nav aria-label="Hoofdnavigatie" className="hidden md:flex items-center gap-3 lg:gap-6 xl:gap-7">
             {NAV.map((l) => {

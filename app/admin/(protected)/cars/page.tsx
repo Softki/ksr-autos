@@ -62,7 +62,7 @@ export default async function AdminCarsPage({
         <div className="relative min-w-[200px] flex-1">
           <label htmlFor="q" className="field-label">Zoeken</label>
           <Search className="pointer-events-none absolute bottom-[13px] left-3.5 size-4 text-[var(--color-mute)]" aria-hidden />
-          <input id="q" name="q" defaultValue={sp.q ?? ""} className="input pl-10" placeholder="Op merk, model of titel…" />
+          <input id="q" name="q" defaultValue={sp.q ?? ""} className="input !pl-11" placeholder="Op merk, model of titel…" />
         </div>
         <div className="min-w-[160px]">
           <label htmlFor="status" className="field-label">Status</label>

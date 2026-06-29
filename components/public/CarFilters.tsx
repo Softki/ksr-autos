@@ -107,7 +107,9 @@ export function CarFilters({ brands, fuels, transmissions, bodies, className, on
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Zoeken…"
             aria-label="Zoek in aanbod"
-            className="input pl-10"
+            // !pl-11: the unlayered `.input { padding: 11px 14px }` rule overrides
+            // a normal `pl-*`, so the placeholder sat under the search icon.
+            className="input !pl-11"
           />
         </div>
         <button
