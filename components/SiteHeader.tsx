@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X, Phone, ArrowRight } from "lucide-react";
+import { Menu, X, Phone, ArrowRight, CalendarPlus } from "lucide-react";
 import { BUSINESS } from "@/lib/constants";
 import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
@@ -91,6 +91,17 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* Desktop: prominent appointment CTA → contactpagina.
+                Full label on lg+; icon-only at md so it never crowds the nav. */}
+            <Link
+              href="/contact"
+              aria-label="Afspraak maken"
+              className="hidden md:inline-flex btn btn-primary btn-sm gap-2 whitespace-nowrap focus-ring"
+            >
+              <CalendarPlus className="size-4" aria-hidden />
+              <span className="hidden lg:inline">Afspraak maken</span>
+            </Link>
+            {/* Mobile: hamburger */}
             <button
               type="button"
               aria-expanded={open}
