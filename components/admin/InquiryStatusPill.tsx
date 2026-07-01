@@ -4,7 +4,7 @@ import type { InquiryStatus } from "@/lib/types";
 
 const TONE: Record<InquiryStatus, string> = {
   new: "bg-[var(--color-red-tint)] text-[var(--color-red-strong)]",
-  contacted: "bg-[#FBF1DF] text-[#8A5A0B]",
+  contacted: "bg-[var(--color-amber-tint)] text-[var(--color-amber)]",
   closed: "bg-[var(--color-success-tint)] text-[var(--color-success)]",
   spam: "bg-[var(--color-sand)] text-[var(--color-steel)]",
 };

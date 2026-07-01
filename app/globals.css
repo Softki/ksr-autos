@@ -41,6 +41,8 @@
   --color-whatsapp-strong: #168F49;
   --color-success: #1A7A47;
   --color-success-tint: #E9F6EE;
+  --color-amber: #8A5A0B;         /* warm amber — reserved / contacted */
+  --color-amber-tint: #FBF1DF;
   --color-warning: #9A6A14;
   --color-warning-tint: #FBF3D9;
   --color-error: #C1121F;

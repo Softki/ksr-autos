@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Plus, Pencil, ExternalLink, Search, Star, CheckCircle2 } from "lucide-react";
+import { Plus, Pencil, ExternalLink, Search, Star, CheckCircle2, Car } from "lucide-react";
 
 import { adminListCars } from "@/lib/data/cars";
 import { DeleteCarButton } from "@/components/admin/DeleteCarButton";
 import { QuickStatusSelect } from "@/components/admin/QuickStatusSelect";
 import { CarThumb } from "@/components/admin/CarThumb";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { StatRow, StatPill } from "@/components/admin/StatPills";
 import { formatKm, formatPrice } from "@/lib/utils/format";
 import type { CarStatus } from "@/lib/types";
 
@@ -34,21 +35,27 @@ export default async function AdminCarsPage({
     return true;
   });
 
+  const byStatus = (s: CarStatus) => cars.filter((c) => c.status === s).length;
+  const isFiltered = filtered.length !== cars.length;
+
   return (
     <>
-      <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
           <Eyebrow>Voorraad</Eyebrow>
           <h1 className="display-2 mt-2">Auto&apos;s beheren</h1>
-          <p className="mt-2 text-[14px] text-[var(--color-steel)]">
-            <span className="tabular">{cars.length}</span> auto&apos;s in totaal
-            {filtered.length !== cars.length && <> · <span className="tabular">{filtered.length}</span> getoond</>}
-          </p>
         </div>
         <Link href="/admin/cars/new" className="btn btn-primary gap-1.5">
           <Plus className="size-4" aria-hidden /> Nieuwe auto
         </Link>
       </div>
+
+      <StatRow className="mb-6">
+        <StatPill value={cars.length} label="Totaal" tone="ink" />
+        <StatPill value={byStatus("available")} label="Beschikbaar" tone="success" dot />
+        <StatPill value={byStatus("reserved")} label="Gereserveerd" tone="amber" dot />
+        <StatPill value={byStatus("sold")} label="Verkocht" tone="red" dot />
+      </StatRow>
 
       {(sp.saved || sp.deleted) && (
         <div className="mb-5 flex items-center gap-2.5 rounded-[var(--radius-md)] border border-[var(--color-success)]/30 bg-[var(--color-success-tint)] px-4 py-3 text-[14px] font-medium text-[var(--color-success)]">
@@ -79,13 +86,21 @@ export default async function AdminCarsPage({
       </form>
 
       {/* Listings */}
+      {isFiltered && filtered.length > 0 && (
+        <p className="mb-3 text-[13px] text-[var(--color-steel)]">
+          <span className="tabular font-semibold text-[var(--color-ink)]">{filtered.length}</span> van {cars.length} auto&apos;s getoond
+        </p>
+      )}
       {filtered.length === 0 ? (
-        <div className="card p-12 text-center">
+        <div className="card grid place-items-center gap-3 p-12 text-center">
+          <span className="grid size-12 place-items-center rounded-full bg-[var(--color-surface)] text-[var(--color-mute)]">
+            <Car className="size-6" aria-hidden />
+          </span>
           <p className="text-[15px] font-semibold">Geen auto&apos;s gevonden</p>
-          <p className="mx-auto mt-1.5 max-w-sm text-[13.5px] text-[var(--color-steel)]">
+          <p className="mx-auto max-w-sm text-[13.5px] text-[var(--color-steel)]">
             Pas de filters aan of voeg een nieuwe auto toe aan de voorraad.
           </p>
-          <Link href="/admin/cars/new" className="btn btn-primary btn-sm mt-5 gap-1.5">
+          <Link href="/admin/cars/new" className="btn btn-primary btn-sm mt-2 gap-1.5">
             <Plus className="size-4" aria-hidden /> Nieuwe auto
           </Link>
         </div>

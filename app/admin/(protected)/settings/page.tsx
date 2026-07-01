@@ -1,4 +1,4 @@
-import { Building2, MapPin, Phone, Mail, Hash, ShieldCheck, User } from "lucide-react";
+import { Building2, MapPin, Phone, Mail, Hash } from "lucide-react";
 
 import { getCurrentAdmin } from "@/lib/auth/session";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -21,22 +21,15 @@ export default async function SettingsPage() {
       </div>
 
       <div className="grid items-start gap-5 lg:grid-cols-[1fr_340px]">
-        <SettingsForm initialName={admin.name ?? ""} />
+        <SettingsForm initialName={admin.name ?? ""} initialEmail={admin.email ?? ""} />
 
         <aside className="space-y-5">
           <section className="card p-5">
-            <h2 className="label-mono mb-3 flex items-center gap-2">
-              <ShieldCheck className="size-4" aria-hidden /> Account
-            </h2>
-            <dl className="space-y-3 text-[14px]">
-              <InfoRow icon={Mail} label="Inlog e-mail" value={admin.email ?? "—"} />
-              <InfoRow icon={User} label="Naam" value={admin.name ?? "Nog niet ingesteld"} />
-            </dl>
-          </section>
-
-          <section className="card p-5">
-            <h2 className="label-mono mb-3 flex items-center gap-2">
-              <Building2 className="size-4" aria-hidden /> Bedrijfsgegevens
+            <h2 className="mb-4 flex items-center gap-2.5 text-[15px] font-bold">
+              <span className="grid size-8 shrink-0 place-items-center rounded-[var(--radius-sm)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
+                <Building2 className="size-4" aria-hidden />
+              </span>
+              Bedrijfsgegevens
             </h2>
             <dl className="space-y-3 text-[14px]">
               <InfoRow icon={Building2} label="Naam" value={BUSINESS.name} />

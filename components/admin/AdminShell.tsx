@@ -93,99 +93,115 @@ export function AdminShell({ admin, children }: { admin: AdminIdentity; children
       <aside className="sticky top-0 hidden h-[100dvh] flex-col border-r border-[var(--color-line)] bg-[var(--color-canvas)] px-4 py-5 lg:flex">
         <Link href="/admin" className="mb-7 flex items-center gap-3 px-2 focus-ring rounded-sm">
           <Logo height={28} />
-          <span className="lbl border-l border-[var(--color-line-strong)] pl-3 text-[10px] tracking-[0.2em] text-[var(--color-steel)]">
+          <span className="border-l border-[var(--color-line-strong)] pl-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">
             Beheer
           </span>
         </Link>
-        <SidebarBody admin={admin} displayName={displayName} pathname={pathname} />
+        <SidebarBody pathname={pathname} />
       </aside>
 
-      {/* ── Mobile topbar ── */}
-      <div className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--color-line)] bg-[var(--color-canvas)]/90 px-4 backdrop-blur-md lg:hidden">
-        <Link href="/admin" className="flex items-center gap-2.5 focus-ring rounded-sm">
-          <Logo height={26} />
-          <span className="lbl text-[9px] tracking-[0.2em] text-[var(--color-steel)]">Beheer</span>
-        </Link>
-        <button
-          ref={triggerRef}
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Menu openen"
-          aria-expanded={open}
-          aria-controls="admin-drawer"
-          className="admin-icon-btn"
-        >
-          <Menu className="size-5" aria-hidden />
-        </button>
-      </div>
-
-      {/* ── Mobile drawer ── */}
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-40 bg-[var(--color-ink)]/45 backdrop-blur-sm lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={close}
-              aria-hidden
-            />
-            <motion.aside
-              ref={drawerRef}
-              id="admin-drawer"
-              onKeyDown={onDrawerKeyDown}
-              className="fixed inset-y-0 left-0 z-50 flex w-[min(84vw,320px)] flex-col bg-[var(--color-canvas)] px-4 py-5 shadow-elevated lg:hidden"
-              initial={reduce ? { opacity: 0 } : { x: "-100%" }}
-              animate={reduce ? { opacity: 1 } : { x: 0 }}
-              exit={reduce ? { opacity: 0 } : { x: "-100%" }}
-              transition={reduce ? { duration: 0.15 } : { type: "spring", stiffness: 400, damping: 40 }}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Beheer navigatie"
+      {/* ── Main column (header + content) ── */}
+      <div className="flex min-h-[100dvh] flex-col">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-[var(--color-line)] bg-[var(--color-canvas)]/85 px-4 backdrop-blur-md md:px-6 lg:h-[68px] lg:px-8">
+          {/* mobile: hamburger + logo */}
+          <div className="flex items-center gap-2.5 lg:hidden">
+            <button
+              ref={triggerRef}
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-label="Menu openen"
+              aria-expanded={open}
+              aria-controls="admin-drawer"
+              className="admin-icon-btn"
             >
-              <div className="mb-7 flex items-center justify-between">
-                <Link href="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2.5 focus-ring rounded-sm">
-                  <Logo height={28} />
-                  <span className="lbl text-[9px] tracking-[0.2em] text-[var(--color-steel)]">Beheer</span>
-                </Link>
-                <button type="button" onClick={close} aria-label="Menu sluiten" className="admin-icon-btn">
-                  <X className="size-5" aria-hidden />
-                </button>
-              </div>
-              <SidebarBody admin={admin} displayName={displayName} pathname={pathname} onNavigate={() => setOpen(false)} />
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+              <Menu className="size-5" aria-hidden />
+            </button>
+            <Link href="/admin" className="flex items-center focus-ring rounded-sm" aria-label="KSR Auto's beheer">
+              <Logo height={24} />
+            </Link>
+          </div>
+          {/* desktop spacer keeps the profile chip pinned right */}
+          <div className="hidden lg:block" aria-hidden />
 
-      {/* ── Main (fades in per navigation; inert behind the open drawer) ── */}
-      <div
-        key={pathname}
-        inert={open || undefined}
-        className="admin-fade-in mx-auto w-full max-w-[1180px] px-5 py-7 md:px-8 md:py-10"
-      >
-        {children}
+          <ProfileChip displayName={displayName} />
+        </header>
+
+        {/* ── Mobile drawer ── */}
+        <AnimatePresence>
+          {open && (
+            <>
+              <motion.div
+                className="fixed inset-0 z-40 bg-[var(--color-ink)]/45 backdrop-blur-sm lg:hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={close}
+                aria-hidden
+              />
+              <motion.aside
+                ref={drawerRef}
+                id="admin-drawer"
+                onKeyDown={onDrawerKeyDown}
+                className="fixed inset-y-0 left-0 z-50 flex w-[min(84vw,320px)] flex-col bg-[var(--color-canvas)] px-4 py-5 shadow-elevated lg:hidden"
+                initial={reduce ? { opacity: 0 } : { x: "-100%" }}
+                animate={reduce ? { opacity: 1 } : { x: 0 }}
+                exit={reduce ? { opacity: 0 } : { x: "-100%" }}
+                transition={reduce ? { duration: 0.15 } : { type: "spring", stiffness: 400, damping: 40 }}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Beheer navigatie"
+              >
+                <div className="mb-7 flex items-center justify-between">
+                  <Link href="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2.5 focus-ring rounded-sm">
+                    <Logo height={28} />
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[var(--color-steel)]">Beheer</span>
+                  </Link>
+                  <button type="button" onClick={close} aria-label="Menu sluiten" className="admin-icon-btn">
+                    <X className="size-5" aria-hidden />
+                  </button>
+                </div>
+                <SidebarBody pathname={pathname} onNavigate={() => setOpen(false)} />
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* ── Content (fades per navigation; inert behind the open drawer) ── */}
+        <main
+          key={pathname}
+          inert={open || undefined}
+          className="admin-fade-in mx-auto w-full max-w-[1180px] flex-1 px-5 py-7 md:px-8 md:py-9"
+        >
+          {children}
+        </main>
       </div>
     </div>
   );
 }
 
-function SidebarBody({
-  admin,
-  displayName,
-  pathname,
-  onNavigate,
-}: {
-  admin: AdminIdentity;
-  displayName: string;
-  pathname: string;
-  onNavigate?: () => void;
-}) {
+function ProfileChip({ displayName }: { displayName: string }) {
+  return (
+    <Link
+      href="/admin/settings"
+      title="Account & instellingen"
+      className="group flex shrink-0 items-center gap-2.5 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] py-1 pl-1 pr-1 transition-colors hover:border-[var(--color-line-strong)] hover:bg-[var(--color-surface)] sm:pr-3.5"
+    >
+      <span className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--color-red)] text-[11.5px] font-bold text-white">
+        {initials(displayName)}
+      </span>
+      <span className="hidden min-w-0 pr-0.5 text-left leading-tight sm:block">
+        <span className="block max-w-[160px] truncate text-[13px] font-bold text-[var(--color-ink)]">{displayName}</span>
+        <span className="block max-w-[160px] truncate text-[11px] text-[var(--color-steel)]">{BUSINESS.name}</span>
+      </span>
+    </Link>
+  );
+}
+
+function SidebarBody({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
     <>
-      <nav className="flex flex-1 flex-col gap-1" aria-label="Beheer navigatie">
+      <nav className="flex flex-1 flex-col gap-1.5" aria-label="Beheer navigatie">
         {NAV.map(({ href, label, icon: Icon, exact }) => {
           const active = exact ? pathname === href : pathname === href || pathname.startsWith(href + "/");
           return (
@@ -195,16 +211,22 @@ function SidebarBody({
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "group flex items-center gap-3 rounded-[var(--radius-md)] px-3 py-2.5 text-[14px] font-semibold transition-colors duration-150",
+                "group relative flex items-center gap-3 rounded-[var(--radius-md)] px-3 py-2.5 text-[14px] font-semibold transition-all duration-150",
                 active
-                  ? "bg-[var(--color-ink)] text-white shadow-[0_12px_26px_-16px_rgb(20_18_16/0.8)]"
-                  : "text-[var(--color-steel)] hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]",
+                  ? "bg-[var(--color-red-tint)] !text-[var(--color-red-strong)]"
+                  : "!text-[var(--color-steel)] hover:bg-[var(--color-surface)] hover:!text-[var(--color-ink)]",
               )}
             >
+              {active && (
+                <span
+                  className="absolute left-0 top-1/2 h-[18px] w-[3px] -translate-y-1/2 rounded-r-full bg-[var(--color-red)]"
+                  aria-hidden
+                />
+              )}
               <Icon
                 className={cn(
                   "size-[18px] shrink-0 transition-transform duration-150 group-hover:scale-110",
-                  active ? "text-white" : "text-[var(--color-steel)] group-hover:text-[var(--color-red)]",
+                  active ? "text-[var(--color-red)]" : "text-[var(--color-steel)] group-hover:text-[var(--color-red)]",
                 )}
                 aria-hidden
               />
@@ -214,50 +236,28 @@ function SidebarBody({
         })}
       </nav>
 
-      <div className="mt-4 space-y-2.5 border-t border-[var(--color-line)] pt-4">
-        <Link
-          href="/admin/settings"
-          onClick={onNavigate}
-          className="flex items-center gap-3 rounded-[var(--radius-md)] bg-[var(--color-paper)] px-3 py-2.5 transition-colors hover:bg-[var(--color-surface)]"
-          title="Ga naar instellingen"
-        >
-          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--color-red)] text-[12.5px] font-bold text-white">
-            {initials(displayName)}
-          </span>
-          <span className="min-w-0">
-            <span className="block truncate text-[13.5px] font-bold leading-tight text-[var(--color-ink)]">
-              {displayName}
-            </span>
-            <span className="block truncate text-[11.5px] text-[var(--color-steel)]">{BUSINESS.name}</span>
-          </span>
-        </Link>
-
-        {admin.email && (
-          <div className="truncate px-3 text-[11.5px] text-[var(--color-steel)]" title={admin.email}>
-            {admin.email}
-          </div>
-        )}
-
-        <div className="grid gap-1">
-          <Link
-            href="/"
-            target="_blank"
-            rel="noopener"
-            className="flex items-center gap-2.5 rounded-[var(--radius-md)] px-3 py-2 text-[13px] font-medium text-[var(--color-steel)] transition-colors hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+      {/* Footer — distinct sand panel, uitloggen | website side by side */}
+      <div className="mt-4 flex items-stretch rounded-[var(--radius-md)] border border-[var(--color-line)] bg-[var(--color-sand)] p-1">
+        <form action={signOutAction} className="flex-1">
+          <button
+            type="submit"
+            className="flex w-full items-center justify-center gap-2 rounded-[8px] px-2 py-2 text-[12.5px] font-semibold text-[var(--color-steel)] transition-colors hover:bg-[var(--color-paper)] hover:text-[var(--color-error)]"
           >
-            <ExternalLink className="size-4" aria-hidden />
-            Bekijk website
-          </Link>
-          <form action={signOutAction}>
-            <button
-              type="submit"
-              className="flex w-full items-center gap-2.5 rounded-[var(--radius-md)] px-3 py-2 text-[13px] font-medium text-[var(--color-steel)] transition-colors hover:bg-[var(--color-error-tint)] hover:text-[var(--color-error)]"
-            >
-              <LogOut className="size-4" aria-hidden />
-              Uitloggen
-            </button>
-          </form>
-        </div>
+            <LogOut className="size-[15px]" aria-hidden />
+            Uitloggen
+          </button>
+        </form>
+        <span className="my-1.5 w-px shrink-0 bg-[var(--color-line-strong)]" aria-hidden />
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener"
+          onClick={onNavigate}
+          className="flex flex-1 items-center justify-center gap-2 rounded-[8px] px-2 py-2 text-[12.5px] font-semibold !text-[var(--color-steel)] transition-colors hover:bg-[var(--color-paper)] hover:!text-[var(--color-ink)]"
+        >
+          <ExternalLink className="size-[15px]" aria-hidden />
+          Website
+        </Link>
       </div>
     </>
   );

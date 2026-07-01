@@ -2,12 +2,13 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { User, KeyRound, Eye, EyeOff, CheckCircle2, AlertCircle, Save } from "lucide-react";
+import { User, Mail, KeyRound, Eye, EyeOff, CheckCircle2, AlertCircle, Save } from "lucide-react";
 
-import { updateProfileAction, updatePasswordAction, initialSettingsState, type SettingsState } from "@/lib/actions/settings";
+import { updateProfileAction, updateEmailAction, updatePasswordAction, initialSettingsState, type SettingsState } from "@/lib/actions/settings";
 
-export function SettingsForm({ initialName }: { initialName: string }) {
+export function SettingsForm({ initialName, initialEmail }: { initialName: string; initialEmail: string }) {
   const [profileState, profileAction] = useActionState(updateProfileAction, initialSettingsState);
+  const [emailState, emailAction] = useActionState(updateEmailAction, initialSettingsState);
   const [pwState, pwAction] = useActionState(updatePasswordAction, initialSettingsState);
   const [showPw, setShowPw] = useState(false);
 
@@ -31,6 +32,28 @@ export function SettingsForm({ initialName }: { initialName: string }) {
           </label>
           <Notice state={profileState} />
           <SaveButton>Naam opslaan</SaveButton>
+        </form>
+      </section>
+
+      {/* Login e-mail */}
+      <section className="card p-5 md:p-6">
+        <SectionHead icon={Mail} title="Inlog e-mailadres" desc="Het adres waarmee je inlogt op het beheerpaneel." />
+        <form action={emailAction} className="mt-5 space-y-4">
+          <label className="block">
+            <span className="field-label">E-mailadres</span>
+            <input
+              name="email"
+              type="email"
+              defaultValue={initialEmail}
+              placeholder="naam@voorbeeld.nl"
+              maxLength={200}
+              required
+              className="input"
+              autoComplete="email"
+            />
+          </label>
+          <Notice state={emailState} />
+          <SaveButton>E-mailadres opslaan</SaveButton>
         </form>
       </section>
 

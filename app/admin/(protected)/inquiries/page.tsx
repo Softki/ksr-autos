@@ -3,6 +3,7 @@ import { Mail, Car, ArrowLeftRight, Search, Image as ImageIcon, ArrowRight, Inbo
 
 import { listInquiries } from "@/lib/data/inquiries";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { StatRow, StatPill } from "@/components/admin/StatPills";
 import { InquiryStatusPill } from "@/components/admin/InquiryStatusPill";
 import { INQUIRY_TYPE_LABEL, parseInquiryPhotos } from "@/lib/utils/inquiry-format";
 import type { InquiryStatus, InquiryType } from "@/lib/types";
@@ -30,19 +31,26 @@ export default async function AdminInquiriesPage({
   const status = sp.status === "all" || !sp.status ? undefined : sp.status;
   const type = sp.type === "all" || !sp.type ? undefined : sp.type;
 
-  const inquiries = await listInquiries({ status, type });
-  const newCount = inquiries.filter((i) => i.status === "new").length;
+  const [allInquiries, inquiries] = await Promise.all([
+    listInquiries({}),
+    listInquiries({ status, type }),
+  ]);
+  const cnt = (s: InquiryStatus) => allInquiries.filter((i) => i.status === s).length;
+  const isFiltered = inquiries.length !== allInquiries.length;
 
   return (
     <>
-      <div className="mb-7">
+      <div className="mb-5">
         <Eyebrow>Aanvragen</Eyebrow>
         <h1 className="display-2 mt-2">Klantaanvragen</h1>
-        <p className="mt-2 text-[14px] text-[var(--color-steel)]">
-          <span className="tabular">{inquiries.length}</span> aanvragen
-          {newCount > 0 && <> · <span className="font-semibold text-[var(--color-red)]">{newCount} nieuw</span></>}
-        </p>
       </div>
+
+      <StatRow className="mb-6">
+        <StatPill value={allInquiries.length} label="Totaal" tone="ink" />
+        <StatPill value={cnt("new")} label="Nieuw" tone="red" dot />
+        <StatPill value={cnt("contacted")} label="Gecontacteerd" tone="amber" dot />
+        <StatPill value={cnt("closed")} label="Afgesloten" tone="success" dot />
+      </StatRow>
 
       {/* Filters */}
       <form className="card mb-5 flex flex-wrap items-end gap-3 p-4" action="/admin/inquiries">
@@ -66,9 +74,14 @@ export default async function AdminInquiriesPage({
             <option value="search_request">Zoekopdracht</option>
           </select>
         </div>
-        <button className="btn btn-secondary btn-sm" type="submit">Filteren</button>
+        <button className="btn btn-secondary" type="submit">Filteren</button>
       </form>
 
+      {isFiltered && inquiries.length > 0 && (
+        <p className="mb-3 text-[13px] text-[var(--color-steel)]">
+          <span className="tabular font-semibold text-[var(--color-ink)]">{inquiries.length}</span> van {allInquiries.length} aanvragen getoond
+        </p>
+      )}
       {inquiries.length === 0 ? (
         <div className="card grid place-items-center gap-3 p-12 text-center">
           <span className="grid size-12 place-items-center rounded-full bg-[var(--color-surface)] text-[var(--color-mute)]">

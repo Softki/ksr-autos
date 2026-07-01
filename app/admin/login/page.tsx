@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Phone, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { isAuthenticatedAdmin } from "@/lib/auth/session";
@@ -119,16 +119,6 @@ export default async function AdminLoginPage({
             showEmail={isSupabaseConfigured}
             redirectTo={redirectTo}
           />
-
-          <div className="mt-7 flex items-center justify-center border-t border-[var(--color-line)] pt-5 text-[13px]">
-            <a
-              href={BUSINESS.telHref}
-              className="tabular inline-flex items-center gap-1.5 font-medium text-[var(--color-steel)] transition-colors hover:text-[var(--color-ink)]"
-            >
-              <Phone className="size-3.5" aria-hidden />
-              {BUSINESS.phone}
-            </a>
-          </div>
         </div>
       </main>
     </div>

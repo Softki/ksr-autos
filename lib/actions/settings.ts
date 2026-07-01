@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { isAuthenticatedAdmin } from "@/lib/auth/session";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient, createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export interface SettingsState {
   ok: boolean;
@@ -34,6 +34,57 @@ export async function updateProfileAction(
 
   revalidatePath("/admin", "layout");
   return { ok: true, message: "Naam opgeslagen." };
+}
+
+const emailSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "Vul een e-mailadres in")
+    .max(200)
+    .refine((v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), "Vul een geldig e-mailadres in"),
+});
+
+function emailErrorMessage(msg: string): string {
+  return /already|exists|registered|in use|taken/i.test(msg)
+    ? "Dit e-mailadres is al in gebruik."
+    : "Wijzigen mislukt. Probeer opnieuw.";
+}
+
+/** Change the owner's login e-mail. */
+export async function updateEmailAction(
+  _prev: SettingsState,
+  formData: FormData,
+): Promise<SettingsState> {
+  if (!(await isAuthenticatedAdmin())) return { ok: false, error: "Niet geautoriseerd" };
+  const parsed = emailSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Ongeldig e-mailadres" };
+  const email = parsed.data.email.toLowerCase();
+
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { ok: false, error: "Niet beschikbaar" };
+  const { data } = await supabase.auth.getUser();
+  const user = data.user;
+  if (!user) return { ok: false, error: "Sessie verlopen. Log opnieuw in." };
+
+  if (user.email?.toLowerCase() === email) {
+    return { ok: true, message: "Dit is al je huidige e-mailadres." };
+  }
+
+  const admin = createSupabaseAdminClient();
+  if (admin) {
+    // Service-role change applies immediately — no confirmation e-mail needed.
+    const { error } = await admin.auth.admin.updateUserById(user.id, { email, email_confirm: true });
+    if (error) return { ok: false, error: emailErrorMessage(error.message) };
+    revalidatePath("/admin", "layout");
+    return { ok: true, message: "E-mailadres bijgewerkt." };
+  }
+
+  // Fallback without service role: user-scoped change may need confirmation.
+  const { error } = await supabase.auth.updateUser({ email });
+  if (error) return { ok: false, error: "Wijzigen mislukt. Probeer opnieuw." };
+  revalidatePath("/admin", "layout");
+  return { ok: true, message: "Controleer je inbox om het nieuwe e-mailadres te bevestigen." };
 }
 
 const pwSchema = z
