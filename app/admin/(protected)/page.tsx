@@ -20,12 +20,12 @@ export default async function AdminDashboard() {
   const newInq = inquiries.filter((i) => i.status === "new").length;
 
   const stats = [
-    { label: "Totaal", value: cars.length, icon: Car, tint: "var(--color-surface)", fg: "var(--color-ink)" },
-    { label: "Beschikbaar", value: count("available"), icon: CircleCheck, tint: "var(--color-success-tint)", fg: "var(--color-success)" },
-    { label: "Gereserveerd", value: count("reserved"), icon: Clock, tint: "var(--color-amber-tint)", fg: "var(--color-amber)" },
-    { label: "Verkocht", value: count("sold"), icon: BadgeCheck, tint: "var(--color-red-tint)", fg: "var(--color-red)" },
-    { label: "Uitgelicht", value: cars.filter((c) => c.is_featured).length, icon: Star, tint: "#FCF6DD", fg: "#8A6D0B" },
-    { label: "Nieuwe aanvragen", value: newInq, icon: Inbox, tint: "var(--color-red-tint)", fg: "var(--color-red)" },
+    { label: "Totaal", value: cars.length, icon: Car, tint: "var(--color-surface)", fg: "var(--color-ink)", href: "/admin/cars" },
+    { label: "Beschikbaar", value: count("available"), icon: CircleCheck, tint: "var(--color-success-tint)", fg: "var(--color-success)", href: "/admin/cars?status=available" },
+    { label: "Gereserveerd", value: count("reserved"), icon: Clock, tint: "var(--color-amber-tint)", fg: "var(--color-amber)", href: "/admin/cars?status=reserved" },
+    { label: "Verkocht", value: count("sold"), icon: BadgeCheck, tint: "var(--color-red-tint)", fg: "var(--color-red)", href: "/admin/cars?status=sold" },
+    { label: "Uitgelicht", value: cars.filter((c) => c.is_featured).length, icon: Star, tint: "#FCF6DD", fg: "#8A6D0B", href: "/admin/cars?featured=1" },
+    { label: "Nieuwe aanvragen", value: newInq, icon: Inbox, tint: "var(--color-red-tint)", fg: "var(--color-red)", href: "/admin/inquiries?status=new" },
   ];
 
   const recentCars = cars.slice(0, 6);
@@ -36,29 +36,36 @@ export default async function AdminDashboard() {
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <Eyebrow>Dashboard</Eyebrow>
-          <h1 className="display-2 mt-2">Overzicht</h1>
+          <h1 className="admin-title mt-2">Overzicht</h1>
         </div>
         <Link href="/admin/cars/new" className="btn btn-primary gap-1.5">
           <Plus className="size-4" aria-hidden /> Nieuwe auto
         </Link>
       </div>
 
-      {/* Stats */}
-      <dl className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      {/* Stats — each tile filters the relevant list */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {stats.map((s) => (
-          <div key={s.label} className="card flex items-center justify-between gap-3 p-4 transition-colors hover:border-[var(--color-line-strong)] md:p-5">
+          <Link
+            key={s.label}
+            href={s.href}
+            className="card group flex items-center justify-between gap-3 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-line-strong)] hover:shadow-[var(--shadow-card-hover)] md:p-5"
+          >
             <div className="min-w-0">
-              <dt className="lbl truncate text-[10px] text-[var(--color-steel)]">{s.label}</dt>
-              <dd className="tabular mt-1.5 font-display text-[28px] font-extrabold leading-none" style={{ color: s.fg }}>
+              <div className="lbl truncate text-[10px] text-[var(--color-steel)]">{s.label}</div>
+              <div className="tabular mt-1.5 font-display text-[28px] font-extrabold leading-none" style={{ color: s.fg }}>
                 {s.value}
-              </dd>
+              </div>
             </div>
-            <span className="grid size-10 shrink-0 place-items-center rounded-[var(--radius-md)]" style={{ background: s.tint, color: s.fg }}>
+            <span
+              className="grid size-10 shrink-0 place-items-center rounded-[var(--radius-md)] transition-transform group-hover:scale-105"
+              style={{ background: s.tint, color: s.fg }}
+            >
               <s.icon className="size-5" aria-hidden />
             </span>
-          </div>
+          </Link>
         ))}
-      </dl>
+      </div>
 
       <div className="mt-9 grid gap-6 lg:grid-cols-2">
         {/* Recent inquiries */}

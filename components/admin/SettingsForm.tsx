@@ -103,13 +103,13 @@ export function SettingsForm({ initialName, initialEmail }: { initialName: strin
 
 function SectionHead({ icon: Icon, title, desc }: { icon: typeof User; title: string; desc: string }) {
   return (
-    <div className="flex items-start gap-3.5">
-      <span className="grid size-10 shrink-0 place-items-center rounded-[var(--radius-md)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
-        <Icon className="size-5" aria-hidden />
+    <div className="flex items-start gap-3">
+      <span className="grid size-9 shrink-0 place-items-center rounded-[var(--radius-md)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
+        <Icon className="size-[18px]" aria-hidden />
       </span>
       <div>
         <h2 className="section-title">{title}</h2>
-        <p className="mt-0.5 !text-[13px] text-[var(--color-steel)]">{desc}</p>
+        <p className="mt-0.5 !text-[13px] leading-snug text-[var(--color-steel)]">{desc}</p>
       </div>
     </div>
   );

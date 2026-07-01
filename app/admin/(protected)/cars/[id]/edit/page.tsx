@@ -25,7 +25,7 @@ export default async function EditCarPage({ params, searchParams }: Props) {
       <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0">
           <Eyebrow>Bewerk auto</Eyebrow>
-          <h1 className="display-2 mt-2 max-w-2xl truncate">{car.brand} {car.model}</h1>
+          <h1 className="admin-title mt-2 max-w-2xl truncate">{car.brand} {car.model}</h1>
           <div className="mt-2 flex items-center gap-2 text-[13.5px] text-[var(--color-steel)]">
             <StatusBadge status={car.status} />
             <span className="label-mono">{car.slug}</span>

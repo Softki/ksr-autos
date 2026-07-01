@@ -49,7 +49,7 @@ export default async function InquiryDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
                 <Eyebrow>{INQUIRY_TYPE_LABEL[inquiry.type]}</Eyebrow>
-                <h1 className="display-2 mt-2 break-words">{inquiry.name}</h1>
+                <h1 className="admin-title mt-2 break-words">{inquiry.name}</h1>
               </div>
               <InquiryStatusPill status={inquiry.status} />
             </div>

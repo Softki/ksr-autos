@@ -11,7 +11,7 @@ export default function NewCarPage() {
       <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
         <div>
           <Eyebrow>Voorraad</Eyebrow>
-          <h1 className="display-2 mt-2">Nieuwe auto toevoegen</h1>
+          <h1 className="admin-title mt-2">Nieuwe auto toevoegen</h1>
           <p className="mt-2 !text-[14px] text-[var(--color-steel)]">
             Vul de gegevens in en sla op — daarna voeg je direct foto&apos;s toe.
           </p>

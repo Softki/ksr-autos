@@ -14,7 +14,7 @@ export default async function SettingsPage() {
     <>
       <div className="mb-7">
         <Eyebrow>Systeem</Eyebrow>
-        <h1 className="display-2 mt-2">Instellingen</h1>
+        <h1 className="admin-title mt-2">Instellingen</h1>
         <p className="mt-2 !text-[14px] text-[var(--color-steel)]">
           Beheer je account en bekijk de bedrijfsgegevens.
         </p>
@@ -26,8 +26,8 @@ export default async function SettingsPage() {
         <aside className="space-y-5">
           <section className="card p-5">
             <h2 className="section-title mb-4 flex items-center gap-2.5">
-              <span className="grid size-8 shrink-0 place-items-center rounded-[var(--radius-sm)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
-                <Building2 className="size-4" aria-hidden />
+              <span className="grid size-9 shrink-0 place-items-center rounded-[var(--radius-md)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
+                <Building2 className="size-[18px]" aria-hidden />
               </span>
               Bedrijfsgegevens
             </h2>

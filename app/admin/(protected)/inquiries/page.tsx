@@ -42,14 +42,14 @@ export default async function AdminInquiriesPage({
     <>
       <div className="mb-5">
         <Eyebrow>Aanvragen</Eyebrow>
-        <h1 className="display-2 mt-2">Klantaanvragen</h1>
+        <h1 className="admin-title mt-2">Klantaanvragen</h1>
       </div>
 
       <StatRow className="mb-6">
-        <StatPill value={allInquiries.length} label="Totaal" tone="ink" />
-        <StatPill value={cnt("new")} label="Nieuw" tone="red" dot />
-        <StatPill value={cnt("contacted")} label="Gecontacteerd" tone="amber" dot />
-        <StatPill value={cnt("closed")} label="Afgesloten" tone="success" dot />
+        <StatPill value={allInquiries.length} label="Totaal" tone="ink" href="/admin/inquiries" />
+        <StatPill value={cnt("new")} label="Nieuw" tone="red" dot href="/admin/inquiries?status=new" />
+        <StatPill value={cnt("contacted")} label="Gecontacteerd" tone="amber" dot href="/admin/inquiries?status=contacted" />
+        <StatPill value={cnt("closed")} label="Afgesloten" tone="success" dot href="/admin/inquiries?status=closed" />
       </StatRow>
 
       {/* Filters */}

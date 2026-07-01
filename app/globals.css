@@ -220,6 +220,16 @@ p { font-size: 1rem; line-height: 1.6; }
   letter-spacing: -0.006em;
   color: var(--color-ink);
 }
+/* Admin page title — smaller than the public .display-2 hero size. A class so
+   it outranks the unlayered h1 element rule. */
+.admin-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.35rem + 0.9vw, 1.95rem);
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
 
 .tabular { font-variant-numeric: tabular-nums; }
 .measure { max-width: 64ch; }
