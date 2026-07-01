@@ -146,8 +146,8 @@ function Section({
           <Icon className="size-[17px]" aria-hidden />
         </span>
         <div>
-          <h2 className="text-[14px] font-bold leading-tight">{title}</h2>
-          {desc && <p className="text-[12px] text-[var(--color-steel)]">{desc}</p>}
+          <h2 className="section-title">{title}</h2>
+          {desc && <p className="!text-[12px] text-[var(--color-steel)]">{desc}</p>}
         </div>
       </div>
       <div className="card space-y-4 p-5 md:p-6">{children}</div>

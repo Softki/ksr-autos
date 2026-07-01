@@ -84,7 +84,7 @@ export default async function InquiryDetailPage({ params }: Props) {
           {inquiry.message && (
             <section className="card p-5 md:p-6">
               <h2 className="label-mono mb-2.5">Bericht</h2>
-              <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--color-charcoal)]">
+              <p className="whitespace-pre-line !text-[15px] leading-relaxed text-[var(--color-charcoal)]">
                 {inquiry.message}
               </p>
             </section>

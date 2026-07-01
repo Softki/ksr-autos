@@ -46,7 +46,7 @@ function SaveHint({ touched }: { touched: boolean }) {
   return (
     <p
       aria-live="polite"
-      className="mt-1.5 flex h-4 items-center gap-1.5 text-[12px] text-[var(--color-steel)]"
+      className="mt-1.5 flex h-4 items-center gap-1.5 !text-[12px] text-[var(--color-steel)]"
     >
       {!touched ? null : pending ? (
         <>

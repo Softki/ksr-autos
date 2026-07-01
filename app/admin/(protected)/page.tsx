@@ -64,7 +64,7 @@ export default async function AdminDashboard() {
         {/* Recent inquiries */}
         <section className="card flex flex-col overflow-hidden">
           <header className="flex items-center justify-between border-b border-[var(--color-line)] px-5 py-4">
-            <h2 className="flex items-center gap-2.5 text-[15px] font-bold">
+            <h2 className="section-title flex items-center gap-2.5">
               <span className="grid size-7 place-items-center rounded-[var(--radius-sm)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
                 <Inbox className="size-4" aria-hidden />
               </span>
@@ -76,7 +76,7 @@ export default async function AdminDashboard() {
           </header>
           <div className="divide-y divide-[var(--color-line)]">
             {recentInq.length === 0 && (
-              <p className="px-5 py-8 text-center text-[14px] text-[var(--color-steel)]">Nog geen aanvragen.</p>
+              <p className="px-5 py-8 text-center !text-[14px] text-[var(--color-steel)]">Nog geen aanvragen.</p>
             )}
             {recentInq.map((i) => (
               <Link
@@ -108,7 +108,7 @@ export default async function AdminDashboard() {
         {/* Recent cars */}
         <section className="card flex flex-col overflow-hidden">
           <header className="flex items-center justify-between border-b border-[var(--color-line)] px-5 py-4">
-            <h2 className="flex items-center gap-2.5 text-[15px] font-bold">
+            <h2 className="section-title flex items-center gap-2.5">
               <span className="grid size-7 place-items-center rounded-[var(--radius-sm)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
                 <Car className="size-4" aria-hidden />
               </span>
@@ -120,7 +120,7 @@ export default async function AdminDashboard() {
           </header>
           <div className="divide-y divide-[var(--color-line)]">
             {recentCars.length === 0 && (
-              <p className="px-5 py-8 text-center text-[14px] text-[var(--color-steel)]">Nog geen auto&apos;s.</p>
+              <p className="px-5 py-8 text-center !text-[14px] text-[var(--color-steel)]">Nog geen auto&apos;s.</p>
             )}
             {recentCars.map((c) => (
               <Link

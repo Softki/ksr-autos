@@ -108,8 +108,8 @@ function SectionHead({ icon: Icon, title, desc }: { icon: typeof User; title: st
         <Icon className="size-5" aria-hidden />
       </span>
       <div>
-        <h2 className="text-[15.5px] font-bold leading-tight">{title}</h2>
-        <p className="mt-0.5 text-[13px] text-[var(--color-steel)]">{desc}</p>
+        <h2 className="section-title">{title}</h2>
+        <p className="mt-0.5 !text-[13px] text-[var(--color-steel)]">{desc}</p>
       </div>
     </div>
   );

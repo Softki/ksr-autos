@@ -87,7 +87,7 @@ export default async function AdminCarsPage({
 
       {/* Listings */}
       {isFiltered && filtered.length > 0 && (
-        <p className="mb-3 text-[13px] text-[var(--color-steel)]">
+        <p className="mb-3 !text-[13px] text-[var(--color-steel)]">
           <span className="tabular font-semibold text-[var(--color-ink)]">{filtered.length}</span> van {cars.length} auto&apos;s getoond
         </p>
       )}
@@ -96,8 +96,8 @@ export default async function AdminCarsPage({
           <span className="grid size-12 place-items-center rounded-full bg-[var(--color-surface)] text-[var(--color-mute)]">
             <Car className="size-6" aria-hidden />
           </span>
-          <p className="text-[15px] font-semibold">Geen auto&apos;s gevonden</p>
-          <p className="mx-auto max-w-sm text-[13.5px] text-[var(--color-steel)]">
+          <p className="!text-[15px] font-semibold">Geen auto&apos;s gevonden</p>
+          <p className="mx-auto max-w-sm !text-[13.5px] text-[var(--color-steel)]">
             Pas de filters aan of voeg een nieuwe auto toe aan de voorraad.
           </p>
           <Link href="/admin/cars/new" className="btn btn-primary btn-sm mt-2 gap-1.5">

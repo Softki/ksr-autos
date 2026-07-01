@@ -76,7 +76,7 @@ export default async function AdminLoginPage({
           <h1 className="font-display text-[clamp(30px,3.4vw,46px)] font-extrabold leading-[1.04] tracking-tight text-white">
             Welkom terug.
           </h1>
-          <p className="mt-5 text-[15.5px] leading-relaxed text-white/65">
+          <p className="mt-5 !text-[15.5px] leading-relaxed text-white/65">
             Log in om de voorraad, aanvragen en content van KSR Auto&rsquo;s te beheren.
           </p>
 
@@ -108,8 +108,8 @@ export default async function AdminLoginPage({
 
           <div className="mb-7">
             <div className="eyebrow mb-2.5">Beheer</div>
-            <h2 className="font-display text-[26px] font-extrabold tracking-tight">Inloggen</h2>
-            <p className="mt-1.5 text-[14.5px] text-[var(--color-steel)]">
+            <h2 className="font-display !text-[26px] font-extrabold tracking-tight">Inloggen</h2>
+            <p className="mt-1.5 !text-[14.5px] text-[var(--color-steel)]">
               Voer uw gegevens in om verder te gaan.
             </p>
           </div>

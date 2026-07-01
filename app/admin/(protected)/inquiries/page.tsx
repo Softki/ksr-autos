@@ -78,7 +78,7 @@ export default async function AdminInquiriesPage({
       </form>
 
       {isFiltered && inquiries.length > 0 && (
-        <p className="mb-3 text-[13px] text-[var(--color-steel)]">
+        <p className="mb-3 !text-[13px] text-[var(--color-steel)]">
           <span className="tabular font-semibold text-[var(--color-ink)]">{inquiries.length}</span> van {allInquiries.length} aanvragen getoond
         </p>
       )}
@@ -87,8 +87,8 @@ export default async function AdminInquiriesPage({
           <span className="grid size-12 place-items-center rounded-full bg-[var(--color-surface)] text-[var(--color-mute)]">
             <Inbox className="size-6" aria-hidden />
           </span>
-          <p className="text-[15px] font-semibold">Geen aanvragen gevonden</p>
-          <p className="text-[13.5px] text-[var(--color-steel)]">Nieuwe aanvragen vanaf de website verschijnen hier.</p>
+          <p className="!text-[15px] font-semibold">Geen aanvragen gevonden</p>
+          <p className="!text-[13.5px] text-[var(--color-steel)]">Nieuwe aanvragen vanaf de website verschijnen hier.</p>
         </div>
       ) : (
         <div className="grid gap-2.5">

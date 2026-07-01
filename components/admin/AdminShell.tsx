@@ -13,6 +13,7 @@ import {
   X,
   ExternalLink,
   LogOut,
+  ChevronRight,
 } from "lucide-react";
 
 import { Logo } from "@/components/ui/Logo";
@@ -184,16 +185,21 @@ function ProfileChip({ displayName }: { displayName: string }) {
   return (
     <Link
       href="/admin/settings"
-      title="Account & instellingen"
-      className="group flex shrink-0 items-center gap-2.5 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] py-1 pl-1 pr-1 transition-colors hover:border-[var(--color-line-strong)] hover:bg-[var(--color-surface)] sm:pr-3.5"
+      title="Account en instellingen"
+      aria-label="Account en instellingen"
+      className="group flex shrink-0 items-center gap-2.5 rounded-full py-1 pl-1 pr-1 transition-colors hover:bg-[var(--color-surface)] sm:pr-2.5"
     >
-      <span className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--color-red)] text-[11.5px] font-bold text-white">
+      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[var(--color-ink)] text-[12px] font-semibold text-white ring-1 ring-inset ring-white/10">
         {initials(displayName)}
       </span>
-      <span className="hidden min-w-0 pr-0.5 text-left leading-tight sm:block">
-        <span className="block max-w-[160px] truncate text-[13px] font-bold text-[var(--color-ink)]">{displayName}</span>
+      <span className="hidden min-w-0 text-left leading-[1.25] sm:block">
+        <span className="block max-w-[160px] truncate text-[13px] font-semibold text-[var(--color-ink)]">{displayName}</span>
         <span className="block max-w-[160px] truncate text-[11px] text-[var(--color-steel)]">{BUSINESS.name}</span>
       </span>
+      <ChevronRight
+        className="hidden size-4 shrink-0 text-[var(--color-mute)] transition-transform group-hover:translate-x-0.5 sm:block"
+        aria-hidden
+      />
     </Link>
   );
 }
