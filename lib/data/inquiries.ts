@@ -111,6 +111,18 @@ export async function listInquiries(opts: ListInquiriesOptions = {}): Promise<In
   return list;
 }
 
+export async function getInquiryById(id: string): Promise<Inquiry | null> {
+  if (isSupabaseConfigured) {
+    const supabase = await createSupabaseServerClient();
+    if (supabase) {
+      const { data, error } = await supabase.from("inquiries").select("*").eq("id", id).maybeSingle();
+      if (!error && data) return fromRow(data as InquiryRow);
+      return null;
+    }
+  }
+  return memory.find((i) => i.id === id) ?? null;
+}
+
 export async function updateInquiryStatus(id: string, status: InquiryStatus): Promise<void> {
   if (isSupabaseConfigured) {
     const supabase = await createSupabaseServerClient();

@@ -9,16 +9,9 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { StatusBadge } from "@/components/public/StatusBadge";
 import { CarThumb } from "@/components/admin/CarThumb";
 import { formatPrice } from "@/lib/utils/format";
-import type { InquiryType } from "@/lib/types";
+import { INQUIRY_TYPE_LABEL } from "@/lib/utils/inquiry-format";
 
-export const metadata = { title: "Admin overzicht" };
-
-const TYPE_LABEL: Record<InquiryType, string> = {
-  contact: "Contact",
-  test_drive: "Proefrit",
-  trade_in: "Inruil",
-  search_request: "Zoekopdracht",
-};
+export const metadata = { title: "Overzicht" };
 
 export default async function AdminDashboard() {
   const [cars, inquiries] = await Promise.all([adminListCars(), listInquiries({})]);
@@ -31,7 +24,7 @@ export default async function AdminDashboard() {
     { label: "Beschikbaar", value: count("available"), icon: CircleCheck, tint: "var(--color-success-tint)", fg: "var(--color-success)" },
     { label: "Gereserveerd", value: count("reserved"), icon: Clock, tint: "#FBF1DF", fg: "#B4690E" },
     { label: "Verkocht", value: count("sold"), icon: BadgeCheck, tint: "var(--color-red-tint)", fg: "var(--color-red)" },
-    { label: "Uitgelicht", value: cars.filter((c) => c.is_featured).length, icon: Star, tint: "#FCF6DD", fg: "var(--color-plate-strong)" },
+    { label: "Uitgelicht", value: cars.filter((c) => c.is_featured).length, icon: Star, tint: "#FCF6DD", fg: "#8A6D0B" },
     { label: "Nieuwe aanvragen", value: newInq, icon: Inbox, tint: "var(--color-red-tint)", fg: "var(--color-red)" },
   ];
 
@@ -55,7 +48,7 @@ export default async function AdminDashboard() {
         {stats.map((s) => (
           <div key={s.label} className="card flex items-center justify-between gap-3 p-4 md:p-5">
             <div className="min-w-0">
-              <dt className="lbl truncate text-[10px] text-[var(--color-mute)]">{s.label}</dt>
+              <dt className="lbl truncate text-[10px] text-[var(--color-steel)]">{s.label}</dt>
               <dd className="tabular mt-1.5 font-display text-[28px] font-extrabold leading-none" style={{ color: s.fg }}>
                 {s.value}
               </dd>
@@ -81,7 +74,11 @@ export default async function AdminDashboard() {
               <p className="px-5 py-8 text-center text-[14px] text-[var(--color-steel)]">Nog geen aanvragen.</p>
             )}
             {recentInq.map((i) => (
-              <div key={i.id} className="flex items-center justify-between gap-4 px-5 py-3.5">
+              <Link
+                key={i.id}
+                href={`/admin/inquiries/${i.id}`}
+                className="group flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-[var(--color-surface)]"
+              >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="truncate text-[14px] font-semibold">{i.name}</span>
@@ -89,13 +86,16 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="truncate text-[12.5px] text-[var(--color-steel)]">{i.email}</div>
                 </div>
-                <div className="shrink-0 text-right">
-                  <div className="text-[12px] font-semibold text-[var(--color-charcoal)]">{TYPE_LABEL[i.type]}</div>
-                  <div className="tabular text-[11.5px] text-[var(--color-mute)]">
-                    {new Date(i.created_at).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}
+                <div className="flex shrink-0 items-center gap-3">
+                  <div className="text-right">
+                    <div className="text-[12px] font-semibold text-[var(--color-charcoal)]">{INQUIRY_TYPE_LABEL[i.type]}</div>
+                    <div className="tabular text-[11.5px] text-[var(--color-steel)]">
+                      {new Date(i.created_at).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}
+                    </div>
                   </div>
+                  <ArrowRight className="size-4 text-[var(--color-mute)] opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>

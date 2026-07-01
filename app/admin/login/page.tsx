@@ -10,7 +10,7 @@ import { LockBodyScroll } from "@/components/admin/LockBodyScroll";
 import { BUSINESS } from "@/lib/constants";
 
 export const metadata = {
-  title: "Admin login",
+  title: "Inloggen",
   robots: { index: false, follow: false },
 };
 
@@ -107,7 +107,7 @@ export default async function AdminLoginPage({
           </div>
 
           <div className="mb-7">
-            <div className="eyebrow mb-2.5">Admin</div>
+            <div className="eyebrow mb-2.5">Beheer</div>
             <h2 className="font-display text-[26px] font-extrabold tracking-tight">Inloggen</h2>
             <p className="mt-1.5 text-[14.5px] text-[var(--color-steel)]">
               Voer uw gegevens in om verder te gaan.

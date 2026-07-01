@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { Mail, Car, ArrowLeftRight, Search, Image as ImageIcon, ArrowRight, Inbox } from "lucide-react";
 
 import { listInquiries } from "@/lib/data/inquiries";
-import { updateInquiryStatusAction } from "@/lib/actions/inquiries-admin";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { InquiryStatusPill } from "@/components/admin/InquiryStatusPill";
+import { INQUIRY_TYPE_LABEL, parseInquiryPhotos } from "@/lib/utils/inquiry-format";
 import type { InquiryStatus, InquiryType } from "@/lib/types";
 
 export const metadata = { title: "Aanvragen" };
@@ -12,18 +14,11 @@ interface SearchParams {
   type?: InquiryType | "all";
 }
 
-const TYPE_LABEL: Record<InquiryType, string> = {
-  contact: "Contact",
-  test_drive: "Proefrit",
-  trade_in: "Inruil",
-  search_request: "Zoekopdracht",
-};
-
-const STATUS_LABEL: Record<InquiryStatus, string> = {
-  new: "Nieuw",
-  contacted: "Gecontacteerd",
-  closed: "Afgesloten",
-  spam: "Spam",
+const TYPE_ICON: Record<InquiryType, typeof Mail> = {
+  contact: Mail,
+  test_drive: Car,
+  trade_in: ArrowLeftRight,
+  search_request: Search,
 };
 
 export default async function AdminInquiriesPage({
@@ -36,104 +31,97 @@ export default async function AdminInquiriesPage({
   const type = sp.type === "all" || !sp.type ? undefined : sp.type;
 
   const inquiries = await listInquiries({ status, type });
+  const newCount = inquiries.filter((i) => i.status === "new").length;
 
   return (
     <>
-      <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
-        <div>
-          <Eyebrow>Aanvragen</Eyebrow>
-          <h1 className="display-2 mt-2">Klantaanvragen</h1>
-          <p className="mt-2 text-[14px] text-[var(--color-steel)]">
-            <span className="tabular">{inquiries.length}</span> resultaten
-          </p>
-        </div>
+      <div className="mb-7">
+        <Eyebrow>Aanvragen</Eyebrow>
+        <h1 className="display-2 mt-2">Klantaanvragen</h1>
+        <p className="mt-2 text-[14px] text-[var(--color-steel)]">
+          <span className="tabular">{inquiries.length}</span> aanvragen
+          {newCount > 0 && <> · <span className="font-semibold text-[var(--color-red)]">{newCount} nieuw</span></>}
+        </p>
       </div>
 
-      <form className="mb-6 flex flex-wrap gap-3 items-end" action="/admin/inquiries">
-        <div>
+      {/* Filters */}
+      <form className="card mb-5 flex flex-wrap items-end gap-3 p-4" action="/admin/inquiries">
+        <div className="min-w-[150px]">
           <label htmlFor="status" className="field-label">Status</label>
           <select id="status" name="status" defaultValue={sp.status ?? "all"} className="select">
-            <option value="all">Alle</option>
+            <option value="all">Alle statussen</option>
             <option value="new">Nieuw</option>
             <option value="contacted">Gecontacteerd</option>
             <option value="closed">Afgesloten</option>
             <option value="spam">Spam</option>
           </select>
         </div>
-        <div>
+        <div className="min-w-[150px]">
           <label htmlFor="type" className="field-label">Type</label>
           <select id="type" name="type" defaultValue={sp.type ?? "all"} className="select">
-            <option value="all">Alle</option>
+            <option value="all">Alle types</option>
             <option value="contact">Contact</option>
             <option value="test_drive">Proefrit</option>
-            <option value="trade_in">Inruil</option>
+            <option value="trade_in">Inruil / verkoop</option>
             <option value="search_request">Zoekopdracht</option>
           </select>
         </div>
         <button className="btn btn-secondary btn-sm" type="submit">Filteren</button>
       </form>
 
-      <div className="grid gap-4">
-        {inquiries.length === 0 && (
-          <div className="card p-10 text-center text-[var(--color-steel)]">Geen aanvragen gevonden.</div>
-        )}
+      {inquiries.length === 0 ? (
+        <div className="card grid place-items-center gap-3 p-12 text-center">
+          <span className="grid size-12 place-items-center rounded-full bg-[var(--color-surface)] text-[var(--color-mute)]">
+            <Inbox className="size-6" aria-hidden />
+          </span>
+          <p className="text-[15px] font-semibold">Geen aanvragen gevonden</p>
+          <p className="text-[13.5px] text-[var(--color-steel)]">Nieuwe aanvragen vanaf de website verschijnen hier.</p>
+        </div>
+      ) : (
+        <div className="grid gap-2.5">
+          {inquiries.map((i) => {
+            const Icon = TYPE_ICON[i.type];
+            const photoCount = parseInquiryPhotos(i.metadata).length;
+            return (
+              <Link
+                key={i.id}
+                href={`/admin/inquiries/${i.id}`}
+                className="card group flex items-center gap-4 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-line-strong)] hover:shadow-[var(--shadow-card-hover)]"
+              >
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[var(--color-surface)] text-[var(--color-steel)]">
+                  <Icon className="size-[18px]" aria-hidden />
+                </span>
 
-        {inquiries.map((i) => (
-          <article key={i.id} className="card p-5 md:p-6">
-            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--color-line)] pb-3">
-              <div>
-                <h2 className="font-semibold text-[15.5px]">{i.name}</h2>
-                <div className="text-[13.5px] text-[var(--color-steel)] flex flex-wrap gap-x-3">
-                  <a className="link" href={`mailto:${i.email}`}>{i.email}</a>
-                  {i.phone && <a className="link tabular" href={`tel:${i.phone}`}>{i.phone}</a>}
-                  <span>· {TYPE_LABEL[i.type]}</span>
-                </div>
-              </div>
-              <div className="text-[12.5px] text-[var(--color-steel)] tabular text-right shrink-0">
-                {new Date(i.created_at).toLocaleString("nl-NL", { dateStyle: "medium", timeStyle: "short" })}
-                <div className="mt-1">
-                  <span className="label-mono">{STATUS_LABEL[i.status]}</span>
-                </div>
-              </div>
-            </header>
-
-            {i.message && (
-              <p className="mt-3 text-[14.5px] leading-relaxed whitespace-pre-line text-[var(--color-charcoal)]">{i.message}</p>
-            )}
-
-            {i.metadata && Object.keys(i.metadata).length > 0 && (
-              <dl className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-3 text-[13px]">
-                {Object.entries(i.metadata).map(([k, v]) => (
-                  <div key={k}>
-                    <dt className="label-mono">{k.replace(/_/g, " ")}</dt>
-                    <dd className="tabular">{String(v ?? "—")}</dd>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="truncate text-[14.5px] font-bold">{i.name}</span>
+                    {i.status === "new" && <span className="size-1.5 shrink-0 rounded-full bg-[var(--color-red)]" aria-label="Nieuw" />}
                   </div>
-                ))}
-              </dl>
-            )}
+                  <div className="truncate text-[12.5px] text-[var(--color-steel)]">{i.email}</div>
+                </div>
 
-            {i.car_id && (
-              <div className="mt-3 text-[12.5px] text-[var(--color-steel)]">
-                Auto referentie:{" "}
-                <Link href={`/admin/cars/${i.car_id}/edit`} className="link">
-                  {i.car_id}
-                </Link>
-              </div>
-            )}
+                <div className="hidden shrink-0 flex-col items-end gap-1 sm:flex">
+                  <span className="text-[12px] font-semibold text-[var(--color-charcoal)]">{INQUIRY_TYPE_LABEL[i.type]}</span>
+                  {photoCount > 0 && (
+                    <span className="inline-flex items-center gap-1 text-[11.5px] text-[var(--color-steel)]">
+                      <ImageIcon className="size-3" aria-hidden /> {photoCount}
+                    </span>
+                  )}
+                </div>
 
-            <form action={updateInquiryStatusAction} className="mt-4 flex items-center gap-2">
-              <input type="hidden" name="id" value={i.id} />
-              <select name="status" defaultValue={i.status} className="select py-1.5 text-[13px] min-h-[36px]">
-                <option value="new">Nieuw</option>
-                <option value="contacted">Gecontacteerd</option>
-                <option value="closed">Afgesloten</option>
-                <option value="spam">Spam</option>
-              </select>
-              <button className="btn btn-secondary btn-sm" type="submit">Status opslaan</button>
-            </form>
-          </article>
-        ))}
-      </div>
+                <div className="shrink-0 text-right">
+                  <InquiryStatusPill status={i.status} />
+                  <div className="mt-1 tabular text-[11.5px] text-[var(--color-steel)]">
+                    {new Date(i.created_at).toLocaleDateString("nl-NL", { day: "numeric", month: "short" })}
+                  </div>
+                </div>
+
+                <ArrowRight className="hidden size-4 shrink-0 text-[var(--color-mute)] transition-transform group-hover:translate-x-0.5 md:block" aria-hidden />
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }

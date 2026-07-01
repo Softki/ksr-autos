@@ -30,3 +30,21 @@ export async function getCurrentAdminEmail(): Promise<string | null> {
   const { data } = await supabase.auth.getUser();
   return data.user?.email ?? null;
 }
+
+export interface AdminIdentity {
+  email: string | null;
+  /** Owner's real name from user_metadata.full_name, if set. */
+  name: string | null;
+}
+
+/** Current admin's email + display name (from Supabase user_metadata). */
+export async function getCurrentAdmin(): Promise<AdminIdentity> {
+  if (!isSupabaseConfigured) return { email: null, name: null };
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { email: null, name: null };
+  const { data } = await supabase.auth.getUser();
+  const u = data.user;
+  const raw = u?.user_metadata?.full_name;
+  const name = typeof raw === "string" && raw.trim() ? raw.trim() : null;
+  return { email: u?.email ?? null, name };
+}

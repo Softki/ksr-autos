@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
-import { Save } from "lucide-react";
+import { Save, Car as CarIcon, Gauge, Eye, FileText } from "lucide-react";
 
 import { upsertCarAction } from "@/lib/actions/cars";
 import { initialCarFormState } from "@/lib/actions/state";
@@ -33,7 +33,7 @@ export function CarForm({ car, className }: Props) {
         </div>
       )}
 
-      <Section title="Basisgegevens">
+      <Section icon={CarIcon} title="Basisgegevens" desc="Merk, model, prijs en kenteken">
         <Grid>
           <Field label="Merk" name="brand" required error={state.errors?.brand}>
             <select className="select" name="brand" required defaultValue={car?.brand ?? ""}>
@@ -58,7 +58,7 @@ export function CarForm({ car, className }: Props) {
         </Grid>
       </Section>
 
-      <Section title="Specificaties">
+      <Section icon={Gauge} title="Specificaties" desc="Technische gegevens van de auto">
         <Grid>
           <Select label="Brandstof" name="fuel_type" defaultValue={car?.fuel_type ?? ""}>
             <option value="">—</option>
@@ -81,7 +81,7 @@ export function CarForm({ car, className }: Props) {
         </Grid>
       </Section>
 
-      <Section title="Status & publicatie">
+      <Section icon={Eye} title="Status & publicatie" desc="Zichtbaarheid op de website">
         <Grid>
           <Select label="Status" name="status" defaultValue={car?.status ?? "available"}>
             <option value="draft">Concept</option>
@@ -96,7 +96,7 @@ export function CarForm({ car, className }: Props) {
         </Grid>
       </Section>
 
-      <Section title="Omschrijving & opties">
+      <Section icon={FileText} title="Omschrijving & opties" desc="Vrije tekst en uitrusting">
         <Textarea label="Omschrijving" name="description" defaultValue={car?.description} rows={8} />
         <Textarea
           label="Opties (één per regel of komma-gescheiden)"
@@ -107,9 +107,12 @@ export function CarForm({ car, className }: Props) {
         />
       </Section>
 
-      <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-[var(--color-line)]">
+      <div className="sticky bottom-0 z-10 -mx-5 flex flex-wrap items-center gap-3 border-t border-[var(--color-line)] bg-[var(--color-sand)]/92 px-5 py-3.5 backdrop-blur-sm md:-mx-8 md:px-8">
         <SubmitButton edit={Boolean(car?.id)} />
         <Link href="/admin/cars" className="btn btn-secondary">Annuleren</Link>
+        <span className="ml-auto hidden text-[12.5px] text-[var(--color-steel)] sm:block">
+          Wijzigingen worden direct live gezet.
+        </span>
       </div>
     </form>
   );
@@ -125,11 +128,29 @@ function SubmitButton({ edit }: { edit: boolean }) {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  icon: Icon,
+  title,
+  desc,
+  children,
+}: {
+  icon: typeof CarIcon;
+  title: string;
+  desc?: string;
+  children: React.ReactNode;
+}) {
   return (
     <section>
-      <h2 className="label-mono mb-3">{title}</h2>
-      <div className="card p-5 md:p-6 space-y-4">{children}</div>
+      <div className="mb-3 flex items-center gap-2.5">
+        <span className="grid size-8 shrink-0 place-items-center rounded-[var(--radius-sm)] bg-[var(--color-red-tint)] text-[var(--color-red)]">
+          <Icon className="size-[17px]" aria-hidden />
+        </span>
+        <div>
+          <h2 className="text-[14px] font-bold leading-tight">{title}</h2>
+          {desc && <p className="text-[12px] text-[var(--color-steel)]">{desc}</p>}
+        </div>
+      </div>
+      <div className="card space-y-4 p-5 md:p-6">{children}</div>
     </section>
   );
 }

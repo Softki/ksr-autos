@@ -225,7 +225,7 @@ export function CarImageManager({ carId, initialImages }: { carId: string; initi
           <UploadCloud className="size-5" aria-hidden />
         </span>
         <span className="text-[14px] font-bold">Sleep foto&rsquo;s hierheen of klik om te uploaden</span>
-        <span className="text-[12.5px] text-[var(--color-mute)]">JPG, PNG of WEBP — max. 10MB per foto, tot 15 stuks</span>
+        <span className="text-[12.5px] text-[var(--color-steel)]">JPG, PNG of WEBP — max. 10MB per foto, tot 15 stuks</span>
       </label>
 
       {items.length > 0 && (

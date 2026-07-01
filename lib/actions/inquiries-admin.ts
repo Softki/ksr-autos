@@ -14,4 +14,6 @@ export async function updateInquiryStatusAction(formData: FormData): Promise<voi
   if (!id || !STATUS.includes(status)) return;
   await updateInquiryStatus(id, status);
   revalidatePath("/admin/inquiries");
+  revalidatePath(`/admin/inquiries/${id}`);
+  revalidatePath("/admin");
 }

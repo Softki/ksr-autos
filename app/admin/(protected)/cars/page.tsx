@@ -104,7 +104,7 @@ export default async function AdminCarsPage({
                     )}
                   </div>
                   <div className="truncate text-[12.5px] text-[var(--color-steel)]">{c.version ?? c.title}</div>
-                  <div className="tabular mt-0.5 truncate text-[12px] text-[var(--color-mute)]">
+                  <div className="tabular mt-0.5 truncate text-[12px] text-[var(--color-steel)]">
                     {[c.year, c.fuel_type, c.transmission, c.mileage != null ? formatKm(c.mileage) : null]
                       .filter(Boolean)
                       .join(" · ")}
